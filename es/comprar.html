@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Su camino a ser propietario - Comprar con George | George Ponce Realty</title>
+<meta name="description" content="El camino completo del comprador con George Ponce: qué puede pagar, qué pasa en cada etapa, y qué esperar en el cierre. Valle de Phoenix, bilingüe, sin presión.">
+<link rel="alternate" hreflang="en" href="/buying.html">
+<link rel="alternate" hreflang="es" href="/es/comprar.html">
+<link rel="alternate" hreflang="x-default" href="/buying.html">
+<link rel="canonical" href="https://georgeponcerealty.com/es/comprar.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/site.css?v=20260810c">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="/es/">
+      <img class="crest" src="/img/logo-shield.webp" alt="George Ponce Realty">
+      <span class="wm-text">
+        <span class="name">George Ponce</span>
+        <span class="tag">Realty</span>
+      </span>
+    </a>
+    <button class="nav-burger" aria-label="Menú" aria-expanded="false">
+      <svg width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="#10203D" stroke-width="2"><path d="M0 1h20M0 8h20M0 15h20"/></svg>
+    </button>
+    <nav class="site-nav">
+      <a href="/es/alquiler.html">Alquiler</a>
+      <a href="/es/comprar.html">Comprar</a>
+      <a href="/es/#stories">Historias</a>
+      <a href="/es/sobre-george.html">Sobre George</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-toggle">
+        <a class="off" href="/buying.html">EN</a>
+        <a class="on" href="/es/comprar.html">ES</a>
+      </div>
+      <a class="btn btn-nav" href="/es/#start">Comenzar</a>
+    </div>
+  </div>
+</header>
+
+<section class="band-navy">
+  <div class="pinstripe"></div>
+  <div class="hero-topbar"></div>
+  <div class="page-hero">
+    <span class="eyebrow" style="color: #E8C98A">El camino del comprador</span>
+    <h1 class="h1">Va a conocer cada paso antes de darlo.</h1>
+    <p>Comprar casa tiene muchas piezas, pero ninguna es un secreto. Aquí está el camino completo, lo que cuesta, y dónde estoy yo en cada parte. Cuando esté listo, lo caminamos juntos.</p>
+  </div>
+</section>
+
+<div class="stripe-rule-red"></div>
+
+<section class="section" id="calculadora">
+  <div class="split">
+    <div>
+      <span class="eyebrow">La primera pregunta</span>
+      <h2 class="h2" style="margin: 14px 0 18px">¿Cuánto puedo pagar en realidad?</h2>
+      <p class="body-md">Aquí empieza toda conversación seria. Este estimado usa la misma guía que usan los prestamistas: su pago de vivienda debe quedarse cerca del 28% de su ingreso mensual, y todas sus deudas juntas debajo de más o menos el 36%.</p>
+      <p class="body-md">Es un punto de partida, no una preaprobación. Las tasas, los programas y la ayuda con el pago inicial pueden mover el número a su favor, y eso es exactamente lo que revisamos en una llamada.</p>
+      <p class="body-md" style="color: #6B7480; font-size: 14.5px">Solo estimados. No es una oferta de préstamo ni asesoría financiera; su prestamista le da los números reales.</p>
+    </div>
+    <form class="calc-panel" id="afford-calc">
+      <div class="fields">
+        <div class="field">
+          <label for="c-income">Ingreso mensual de su hogar</label>
+          <div class="help">Antes de impuestos. Incluya a todos los que estarán en el préstamo.</div>
+          <input id="c-income" name="income" type="text" inputmode="numeric" placeholder="$5,000">
+        </div>
+        <div class="field">
+          <label for="c-debts">Pagos de deudas al mes</label>
+          <div class="help">Pagos de carro, mínimos de tarjetas, préstamos estudiantiles. No incluya renta ni servicios.</div>
+          <input id="c-debts" name="debts" type="text" inputmode="numeric" placeholder="$450">
+        </div>
+        <div class="field">
+          <label for="c-down">Lo que podría dar de enganche</label>
+          <div class="help">El ahorro que usaría al inicio. Los préstamos FHA empiezan en 3.5%, y algunos programas ayudan con esto.</div>
+          <input id="c-down" name="down" type="text" inputmode="numeric" placeholder="$10,000">
+        </div>
+      </div>
+      <div class="form-footer">
+        <button class="btn btn-navy" type="submit">Calcular mis números</button>
+      </div>
+      <div class="calc-result" id="calc-out" style="display:none">
+        <div style="font-size: 12.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C08A3E; margin-bottom: 8px">Un rango realista para buscar</div>
+        <div class="big" id="calc-range">$0</div>
+        <div class="note">Alrededor de <strong id="calc-pay">$0</strong>/mes entre capital, interés, impuestos y seguro. Basado en un préstamo a 30 años con tasas típicas actuales. Los números de su prestamista reemplazan estos.</div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0" id="camino">
+  <div class="section-intro">
+    <span class="eyebrow">El camino</span>
+    <h2 class="h2">De la primera llamada al día de la bandera</h2>
+    <p class="body-lg">Seis etapas. Algunas toman una semana, otras un mes. Usted siempre va a saber en cuál estamos y qué sigue.</p>
+  </div>
+  <div class="journey">
+    <div class="j-step">
+      <div class="j-node">01</div>
+      <div class="j-card">
+        <div class="j-when">Etapa 1 · Semana 1</div>
+        <div class="j-title">Preaprobación</div>
+        <div class="j-body">Conoce a un prestamista de mi confianza y nos dice el presupuesto real. No cuesta nada y no compromete nada. Solo significa que los vendedores toman su oferta en serio.</div>
+      </div>
+    </div>
+    <div class="j-step">
+      <div class="j-node">02</div>
+      <div class="j-card">
+        <div class="j-when">Etapa 2 · Semanas 1&ndash;6</div>
+        <div class="j-title">La búsqueda</div>
+        <div class="j-body">Visitamos casas dentro del presupuesto, en las zonas que usted nombró. Yo le señalo los problemas, no solo los acabados bonitos. Nadie lo convence de nada.</div>
+      </div>
+    </div>
+    <div class="j-step">
+      <div class="j-node">03</div>
+      <div class="j-card">
+        <div class="j-when">Etapa 3 · Unos días</div>
+        <div class="j-title">La oferta</div>
+        <div class="j-body">Vemos en cuánto se vendieron casas parecidas, decidimos el número juntos, y yo negocio por usted. A veces ganamos, a veces nos retiramos. Retirarse está permitido.</div>
+      </div>
+    </div>
+    <div class="j-step">
+      <div class="j-node">04</div>
+      <div class="j-card">
+        <div class="j-when">Etapa 4 · Semanas 1&ndash;2 bajo contrato</div>
+        <div class="j-title">Inspección y avalúo</div>
+        <div class="j-body">Un inspector con licencia revisa todo y leemos el reporte juntos. Si aparece algo grande, renegociamos o nos salimos con su depósito protegido.</div>
+      </div>
+    </div>
+    <div class="j-step">
+      <div class="j-node">05</div>
+      <div class="j-card">
+        <div class="j-when">Etapa 5 · Semanas 3&ndash;4 bajo contrato</div>
+        <div class="j-title">El cierre</div>
+        <div class="j-body">Recorrido final, y después las firmas en la compañía de título. Yo me siento a su lado todo el tiempo, y no se firma nada que no hayamos repasado antes en su idioma.</div>
+      </div>
+    </div>
+    <div class="j-step j-final">
+      <div class="j-node">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#10203D"><path d="M12 1.6l2.9 6.5 7.1.7-5.3 4.7 1.5 7-6.2-3.6-6.2 3.6 1.5-7L2 8.8l7.1-.7z"/></svg>
+      </div>
+      <div class="j-card j-final-card">
+        <div class="pinstripe"></div>
+        <div class="j-inner">
+          <div class="j-copy">
+            <div class="j-when">Etapa 6 · El día de la bandera</div>
+            <div class="j-title">
+              Bienvenido a casa
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#C08A3E"><path d="M12 1.6l2.9 6.5 7.1.7-5.3 4.7 1.5 7-6.2-3.6-6.2 3.6 1.5-7L2 8.8l7.1-.7z"/></svg>
+            </div>
+            <div class="j-body">Llevo la bandera a cada cierre. Antes de irme, encontramos el lugar correcto para colgarla. La casa es suya, y la bandera también. Esa parte no es un eslogan.</div>
+          </div>
+          <div class="j-photo">
+            <img src="/img/closing-signing.webp" alt="Una pareja firmando los documentos de cierre en la agencia de título." loading="lazy" width="1289" height="1297">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-navy" id="bienvenido">
+  <div class="pinstripe"></div>
+  <div class="section" style="position: relative">
+    <div class="stories-head">
+      <div>
+        <span class="eyebrow">Bienvenido a casa</span>
+        <h2 class="h2">Este podría ser usted</h2>
+      </div>
+      <p>Cada una de estas familias empezó con una llamada, y la mayoría empezó alquilando. La bandera se cuelga el día que se entregan las llaves.</p>
+    </div>
+    <div class="stories-grid">
+      <div class="story">
+        <div class="photo r43">
+          <img src="/img/sold-key-family.webp" alt="Una familia con la llave roja de SOLD en la agencia de título el día del cierre." loading="lazy" width="1344" height="928">
+        </div>
+        <div>
+          <div class="name">El día del cierre</div>
+          <p class="lede">Tres generaciones en la mesa de la compañía de título. Al más chico le tocó cargar la llave.</p>
+        </div>
+      </div>
+      <div class="story">
+        <div class="photo r34">
+          <img src="/img/family-porch-flag.webp" alt="Una familia con la bandera americana en el porche de su nueva casa." loading="lazy" width="1529" height="958">
+        </div>
+        <div class="cap">La bandera se cuelga antes de desempacar las cajas.</div>
+      </div>
+      <div class="story">
+        <div class="photo r34">
+          <img src="/img/home-flag-wide.webp" alt="Un orgulloso nuevo propietario con la bandera americana frente a su casa." loading="lazy" width="1600" height="772">
+        </div>
+        <div class="cap">Toda casa cuenta. Toda bandera significa lo mismo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="red">
+  <div class="section-intro">
+    <span class="eyebrow">La red de confianza de George</span>
+    <h2 class="h2">Va a necesitar más que un agente</h2>
+    <p class="body-lg">Con los años armé una lista corta de personas que tratan bien a mis clientes. Cuando necesite a alguien, yo hago la presentación personalmente.</p>
+  </div>
+  <div class="cards-2">
+    <div class="info-card">
+      <p class="title">Prestamistas</p>
+      <p>Oficiales de préstamo que trabajan con compradores primerizos, ingreso por cuenta propia y programas de ayuda con el enganche, y que contestan el teléfono. En español y en inglés.</p>
+    </div>
+    <div class="info-card">
+      <p class="title">Inspectores</p>
+      <p>Inspectores de casa con licencia que le dicen la verdad sobre una propiedad antes de que sea suya, y recorren el reporte con usted cuarto por cuarto.</p>
+    </div>
+    <div class="info-card">
+      <p class="title">Contratistas y oficios</p>
+      <p>Techadores, técnicos de aire, plomeros y handymen que llegan, cobran justo, y llevan años entrando a las casas de mis clientes.</p>
+    </div>
+    <div class="info-card">
+      <p class="title">Seguro y título</p>
+      <p>Agentes de seguro de casa y compañías de título que cierran a tiempo y le explican qué está pagando, línea por línea.</p>
+    </div>
+  </div>
+  <p class="body-sm" style="margin-top: 20px; color: #6B7480">Las presentaciones son gratis y sin condiciones. No cobro comisiones por referir; solo quiero que la gente alrededor suyo haga bien su trabajo. <a href="/es/red.html">Conozca los negocios de mi red &rarr;</a></p>
+</section>
+
+<section class="cta-band">
+  <div class="pinstripe"></div>
+  <div class="inner">
+    <div style="flex: 1; min-width: 280px">
+      <h2 class="h2">¿Cree que podría estar listo?</h2>
+      <p>La primera llamada dura veinte minutos y no cuesta nada. En el peor de los casos, sale con un plan para el próximo año en vez de este.</p>
+    </div>
+    <a class="btn btn-gold" href="/es/#start">Comenzar</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="stripe-rule-gold"></div>
+  <div class="footer-grid">
+    <div>
+      <div class="mark">George Ponce Realty</div>
+      <p class="blurb">Ayudando a inquilinos del valle de Phoenix a convertirse en propietarios, una familia a la vez.</p>
+      <div class="addr">CENTURY 21 Northwest Realty<br>16040 N 59th Ave, Glendale, AZ 85306<br><a href="tel:+16238535241">Directo (623) 853-5241</a> &middot; <a href="tel:+16239790065">Oficina (623) 979-0065</a><br><a href="mailto:george@georgeponcerealty.com">george@georgeponcerealty.com</a></div>
+    </div>
+    <div>
+      <div class="col-head">Su camino</div>
+      <div class="links">
+        <a href="/es/alquiler.html">Alquiler</a>
+        <a href="/es/comprar.html">Comprar</a>
+        <a href="/es/propietarios.html">Propietarios</a>
+        <a href="/es/red.html">Red de confianza</a>
+        <a href="/es/#start">Comenzar</a>
+      </div>
+    </div>
+    <div>
+      <div class="col-head">Información</div>
+      <div class="links">
+        <a href="/es/#stories">Historias</a>
+        <a href="/es/sobre-george.html">Sobre George</a>
+        <a href="/es/contacto.html">Contacto</a>
+        <a href="/es/privacidad.html">Privacidad y legal</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <p>George Ponce es agente de bienes raíces con licencia en Arizona (SA66163000) con CENTURY 21 Northwest Realty. Cada oficina CENTURY 21 es de propiedad y operación independiente. Igualdad de Oportunidades de Vivienda.</p>
+  </div>
+</footer>
+
+<script src="/js/site.js?v=20260810c"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+{
+  "updated": "2026-08-09",
+  "businesses": [
+    {
+      "id": "hive-rise",
+      "name": "Hive-Rise",
+      "category": { "en": "Web design & automation", "es": "Diseño web y automatización" },
+      "blurb": {
+        "en": "The web studio behind this site. Websites, booking and automation for small businesses across the valley, built by Anne in Surprise.",
+        "es": "El estudio web detrás de este sitio. Sitios, reservas y automatización para negocios pequeños de todo el valle, hecho por Anne en Surprise."
+      },
+      "phone": "(480) 440-2314",
+      "website": "https://hive-rise.com",
+      "image": "/img/network/hive-rise.webp",
+      "demo": false
+    },
+    {
+      "id": "sonoran-sun-inspection",
+      "name": "Sonoran Sun Home Inspection",
+      "category": { "en": "Home inspections", "es": "Inspecciones de casa" },
+      "blurb": {
+        "en": "Licensed home inspections across the Phoenix metro, with clear reports and appointment reminders by text.",
+        "es": "Inspecciones de casa con licencia en todo el metro de Phoenix, con reportes claros y recordatorios de cita por texto."
+      },
+      "phone": "(623) 238-8007",
+      "website": "https://sonoransun.net/home-inspection",
+      "image": "/img/network/sonoran-inspection.webp",
+      "demo": false
+    },
+    {
+      "id": "sonoran-sun-appliance",
+      "name": "Sonoran Sun Appliance Repair",
+      "category": { "en": "Appliance repair", "es": "Reparación de electrodomésticos" },
+      "blurb": {
+        "en": "Home appliance repair in the West Valley. Honest diagnostics, fair quotes, and the same-day answers new homeowners need.",
+        "es": "Reparación de electrodomésticos en el West Valley. Diagnósticos honestos, precios justos, y las respuestas rápidas que un nuevo propietario necesita."
+      },
+      "phone": "(623) 238-8410",
+      "website": "https://sonoransun.net/appliance-repair",
+      "image": "/img/network/sonoran-appliance.webp",
+      "demo": false
+    },
+    {
+      "id": "demo-lender",
+      "name": "Valley Sun Lending",
+      "category": { "en": "Home loans", "es": "Préstamos hipotecarios" },
+      "blurb": {
+        "en": "First-time buyer programs, FHA, and down-payment assistance, explained in English and Spanish.",
+        "es": "Programas para compradores primerizos, FHA y ayuda con el enganche, explicados en español y en inglés."
+      },
+      "phone": "(602) 555-0134",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-title",
+      "name": "Saguaro Title Co.",
+      "category": { "en": "Title & escrow", "es": "Título y custodia" },
+      "blurb": {
+        "en": "Closings that happen on time, with every line item explained before you sign.",
+        "es": "Cierres a tiempo, con cada cargo explicado antes de firmar."
+      },
+      "phone": "(602) 555-0177",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-ac",
+      "name": "Cactus Cool Air",
+      "category": { "en": "Heating & cooling", "es": "Aire y calefacción" },
+      "blurb": {
+        "en": "AC service and honest repair-or-replace advice, before the first 100-degree day.",
+        "es": "Servicio de aire acondicionado y consejos honestos de reparar o reemplazar, antes del primer día de 100 grados."
+      },
+      "phone": "(602) 555-0161",
+      "website": "",
+      "image": "",
+      "demo": true
+    }
+  ]
+}

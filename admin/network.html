@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Network Manager | George Ponce Realty (admin)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/site.css?v=20260810c">
+<style>
+  .admin-wrap { max-width: 1000px; margin: 0 auto; padding: 40px 32px 80px; }
+  .admin-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
+  .admin-head h1 { font-family: var(--serif); font-size: 34px; font-weight: 700; color: var(--navy); margin: 0; }
+  .admin-note { background: var(--cream-warm); border: 1px solid var(--hairline); border-radius: 6px; padding: 16px 20px; font-size: 14px; line-height: 1.6; color: var(--ink-muted); margin: 18px 0 28px; }
+  .biz { background: #fff; border: 1px solid var(--hairline); border-radius: 6px; padding: 22px 24px; margin-bottom: 18px; }
+  .biz.demo-entry { border-style: dashed; }
+  .biz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .biz-top .num { font-family: var(--serif); font-weight: 700; color: var(--gold); font-size: 15px; }
+  .biz-top .nm { font-family: var(--serif); font-weight: 700; color: var(--navy); font-size: 19px; flex: 1; }
+  .biz-top button { background: #fff; border: 1px solid var(--hairline-strong); border-radius: 4px; padding: 6px 10px; cursor: pointer; font-family: var(--sans); font-size: 12.5px; color: var(--ink); }
+  .biz-top button:hover { border-color: var(--gold); }
+  .biz-top button.del { color: var(--red); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  .grid2 .wide { grid-column: 1 / -1; }
+  .fld label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .fld input, .fld textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--hairline-strong); border-radius: 4px; padding: 9px 11px; font-size: 13.5px; font-family: var(--sans); background: var(--field); color: var(--ink); }
+  .fld input:focus, .fld textarea:focus { border-color: var(--gold); outline: none; }
+  .fld .thumb { margin-top: 6px; height: 54px; border-radius: 4px; border: 1px solid var(--hairline); object-fit: cover; display: block; }
+  .demo-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-muted); }
+  .actions { position: sticky; bottom: 0; background: rgba(251,248,242,0.96); backdrop-filter: blur(8px); border-top: 1px solid var(--hairline); margin: 30px -32px 0; padding: 16px 32px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .actions .status { font-size: 13px; color: var(--ink-light); margin-left: auto; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="/">
+      <img class="crest" src="/img/logo-shield.webp" alt="George Ponce Realty">
+      <span class="wm-text">
+        <span class="name">George Ponce</span>
+        <span class="tag">Network Manager</span>
+      </span>
+    </a>
+    <div class="header-actions" style="margin-left:auto">
+      <a class="btn btn-nav" href="/network.html">View live page</a>
+    </div>
+  </div>
+</header>
+
+<div class="admin-wrap">
+  <div class="admin-head">
+    <h1>Trusted Network Manager</h1>
+  </div>
+  <div class="admin-note">
+    <strong>How this works:</strong> edit the businesses below, then click <strong>Download network.json</strong>.
+    Replace <code>site/data/network.json</code> with the downloaded file and redeploy (or just email the file to Anne at
+    <a href="mailto:anne@hive-rise.com">anne@hive-rise.com</a> and she'll publish it).
+    Your edits also save in this browser as a draft, so nothing is lost if you close the tab.
+    Both the English and Spanish network pages update from this one file.
+  </div>
+
+  <div id="list"></div>
+
+  <div class="actions">
+    <button class="btn btn-navy" id="add">+ Add a business</button>
+    <button class="btn btn-gold" id="download" style="padding: 15px 24px">Download network.json</button>
+    <button class="btn" id="copy" style="border: 1px solid var(--hairline-strong); padding: 14px 20px; background: #fff">Copy JSON</button>
+    <button class="btn" id="reset" style="border: 1px solid var(--hairline-strong); padding: 14px 20px; background: #fff">Discard draft &amp; reload</button>
+    <span class="status" id="status"></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  var DRAFT_KEY = 'gp-network-draft';
+  var data = { updated: '', businesses: [] };
+  var list = document.getElementById('list');
+  var status = document.getElementById('status');
+
+  function note(msg) { status.textContent = msg; }
+
+  function saveDraft() {
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch (e) {}
+    note('Draft saved in this browser.');
+  }
+
+  function slugify(s) {
+    return (s || 'business').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'business';
+  }
+
+  function fld(labelText, value, onInput, opts) {
+    opts = opts || {};
+    var wrap = document.createElement('div');
+    wrap.className = 'fld' + (opts.wide ? ' wide' : '');
+    var label = document.createElement('label');
+    label.textContent = labelText;
+    wrap.appendChild(label);
+    var input = document.createElement(opts.textarea ? 'textarea' : 'input');
+    if (opts.textarea) input.rows = 2;
+    input.value = value || '';
+    if (opts.placeholder) input.placeholder = opts.placeholder;
+    input.addEventListener('input', function () { onInput(input.value); saveDraft(); });
+    wrap.appendChild(input);
+    if (opts.thumb && value) {
+      var img = document.createElement('img');
+      img.className = 'thumb'; img.src = value; img.alt = '';
+      wrap.appendChild(img);
+    }
+    return wrap;
+  }
+
+  function render() {
+    list.innerHTML = '';
+    data.businesses.forEach(function (b, i) {
+      b.category = b.category || {}; b.blurb = b.blurb || {};
+      var card = document.createElement('div');
+      card.className = 'biz' + (b.demo ? ' demo-entry' : '');
+
+      var top = document.createElement('div');
+      top.className = 'biz-top';
+      var num = document.createElement('span'); num.className = 'num';
+      num.textContent = String(i + 1).padStart(2, '0');
+      var nm = document.createElement('span'); nm.className = 'nm';
+      nm.textContent = b.name || '(unnamed)';
+      top.appendChild(num); top.appendChild(nm);
+
+      [['↑', function () { if (i > 0) { data.businesses.splice(i - 1, 0, data.businesses.splice(i, 1)[0]); render(); saveDraft(); } }],
+       ['↓', function () { if (i < data.businesses.length - 1) { data.businesses.splice(i + 1, 0, data.businesses.splice(i, 1)[0]); render(); saveDraft(); } }],
+       ['Delete', function () { if (confirm('Remove "' + (b.name || 'this business') + '" from the network page?')) { data.businesses.splice(i, 1); render(); saveDraft(); } }]
+      ].forEach(function (btn) {
+        var el = document.createElement('button');
+        el.textContent = btn[0];
+        if (btn[0] === 'Delete') el.className = 'del';
+        el.addEventListener('click', btn[1]);
+        top.appendChild(el);
+      });
+      card.appendChild(top);
+
+      var grid = document.createElement('div');
+      grid.className = 'grid2';
+      grid.appendChild(fld('Business name', b.name, function (v) { b.name = v; b.id = b.id || slugify(v); nm.textContent = v || '(unnamed)'; }));
+      grid.appendChild(fld('Phone', b.phone, function (v) { b.phone = v; }, { placeholder: '(623) 555-0100' }));
+      grid.appendChild(fld('Category (English)', b.category.en, function (v) { b.category.en = v; }, { placeholder: 'Home loans' }));
+      grid.appendChild(fld('Category (Spanish)', b.category.es, function (v) { b.category.es = v; }, { placeholder: 'Préstamos hipotecarios' }));
+      grid.appendChild(fld('Website (full URL, optional)', b.website, function (v) { b.website = v; }, { wide: true, placeholder: 'https://example.com' }));
+      grid.appendChild(fld('Image URL (optional; /img/network/... or full URL)', b.image, function (v) { b.image = v; }, { wide: true, thumb: true, placeholder: '/img/network/business.webp' }));
+      grid.appendChild(fld('One-line blurb (English)', b.blurb.en, function (v) { b.blurb.en = v; }, { wide: true, textarea: true }));
+      grid.appendChild(fld('One-line blurb (Spanish)', b.blurb.es, function (v) { b.blurb.es = v; }, { wide: true, textarea: true }));
+
+      var demoWrap = document.createElement('label');
+      demoWrap.className = 'demo-check wide';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.checked = !!b.demo;
+      cb.addEventListener('change', function () { b.demo = cb.checked; card.className = 'biz' + (b.demo ? ' demo-entry' : ''); saveDraft(); });
+      demoWrap.appendChild(cb);
+      demoWrap.appendChild(document.createTextNode(' Mark as "Demo" (shows a Demo badge on the live page)'));
+      grid.appendChild(demoWrap);
+
+      card.appendChild(grid);
+      list.appendChild(card);
+    });
+  }
+
+  function exportJson() {
+    var out = JSON.parse(JSON.stringify(data));
+    out.updated = new Date().toISOString().slice(0, 10);
+    out.businesses.forEach(function (b) { b.id = b.id || slugify(b.name); b.demo = !!b.demo; });
+    return JSON.stringify(out, null, 2) + '\n';
+  }
+
+  document.getElementById('add').addEventListener('click', function () {
+    data.businesses.push({ id: '', name: '', category: { en: '', es: '' }, blurb: { en: '', es: '' }, phone: '', website: '', image: '', demo: false });
+    render(); saveDraft();
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  });
+
+  document.getElementById('download').addEventListener('click', function () {
+    var blob = new Blob([exportJson()], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'network.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    note('Downloaded. Replace site/data/network.json and redeploy, or send it to Anne.');
+  });
+
+  document.getElementById('copy').addEventListener('click', function () {
+    navigator.clipboard.writeText(exportJson()).then(function () { note('JSON copied to clipboard.'); });
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    if (!confirm('Discard your local draft and reload the published list?')) return;
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    location.reload();
+  });
+
+  var draft = null;
+  try { draft = localStorage.getItem(DRAFT_KEY); } catch (e) {}
+  if (draft) {
+    try { data = JSON.parse(draft); render(); note('Loaded your saved draft (not yet published).'); } catch (e) { draft = null; }
+  }
+  if (!draft) {
+    fetch('/data/network.json', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { data = d; render(); note('Loaded the published list.'); })
+      .catch(function () { render(); note('Could not load network.json; starting empty.'); });
+  }
+})();
+</script>
+</body>
+</html>

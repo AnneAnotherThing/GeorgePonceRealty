@@ -1,0 +1,19 @@
+# George Ponce Real Estate — Netlify deploy config
+# Static bilingual site (EN at root, ES under /es/), plus one serverless
+# function that emails form submissions via Resend.
+
+[build]
+  # No build step, plain static HTML/CSS/JS.
+  publish = "."
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/lead"
+  to = "/.netlify/functions/lead-notify"
+  status = 200
