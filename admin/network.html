@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/css/site.css?v=20260810f">
+<link rel="stylesheet" href="/css/site.css?v=20260810g">
 <style>
   .admin-wrap { max-width: 1000px; margin: 0 auto; padding: 40px 32px 80px; }
   .admin-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -44,7 +44,7 @@
       <img class="crest" src="/img/logo-shield.webp" alt="George Ponce Realty">
       <span class="wm-text">
         <span class="name">George Ponce</span>
-        <span class="tag">Network Manager</span>
+        <span class="tag">Circle of Trust</span>
       </span>
     </a>
     <div class="header-actions" style="margin-left:auto">
@@ -146,6 +146,29 @@
       grid.className = 'grid2';
       grid.appendChild(fld('Business name', b.name, function (v) { b.name = v; b.id = b.id || slugify(v); nm.textContent = v || '(unnamed)'; }));
       grid.appendChild(fld('Phone', b.phone, function (v) { b.phone = v; }, { placeholder: '(623) 555-0100' }));
+
+      // Section dropdown (drives the groupings on the live page)
+      (function () {
+        var wrap = document.createElement('div');
+        wrap.className = 'fld';
+        var label = document.createElement('label');
+        label.textContent = 'Section (page grouping)';
+        wrap.appendChild(label);
+        var sel = document.createElement('select');
+        sel.style.cssText = 'width:100%; box-sizing:border-box; border:1px solid var(--hairline-strong); border-radius:4px; padding:9px 11px; font-size:13.5px; font-family:var(--sans); background:var(--field); color:var(--ink)';
+        (data.sections || []).forEach(function (s) {
+          var opt = document.createElement('option');
+          opt.value = s.id;
+          opt.textContent = (s.label && s.label.en) || s.id;
+          if (b.section === s.id) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        if (!b.section && data.sections && data.sections.length) b.section = data.sections[0].id;
+        sel.addEventListener('change', function () { b.section = sel.value; saveDraft(); });
+        wrap.appendChild(sel);
+        grid.appendChild(wrap);
+      })();
+
       grid.appendChild(fld('Category (English)', b.category.en, function (v) { b.category.en = v; }, { placeholder: 'Home loans' }));
       grid.appendChild(fld('Category (Spanish)', b.category.es, function (v) { b.category.es = v; }, { placeholder: 'Préstamos hipotecarios' }));
       grid.appendChild(fld('Website (full URL, optional)', b.website, function (v) { b.website = v; }, { wide: true, placeholder: 'https://example.com' }));

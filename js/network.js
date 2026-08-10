@@ -31,6 +31,7 @@
     c.appendChild(imgWrap);
 
     var body = el('div', 'net-body');
+    body.appendChild(el('div', 'net-cat', (b.category && b.category[lang]) || ''));
     var name = el('div', 'net-name', b.name || '');
     if (b.demo) name.appendChild(el('span', 'net-badge', T.demo));
     body.appendChild(name);
@@ -54,28 +55,38 @@
     return c;
   }
 
+  var STAR = 'M12 1.6l2.9 6.5 7.1.7-5.3 4.7 1.5 7-6.2-3.6-6.2 3.6 1.5-7L2 8.8l7.1-.7z';
+
   fetch('/data/network.json')
     .then(function (r) { return r.json(); })
     .then(function (data) {
-      var groups = {};
-      var order = [];
+      var sections = data.sections || [];
+      var byId = {};
+      sections.forEach(function (s) { byId[s.id] = { def: s, items: [] }; });
+      var fallback = { def: { id: '_other', label: { en: 'More of the circle', es: 'Más del círculo' } }, items: [] };
       (data.businesses || []).forEach(function (b) {
-        var cat = (b.category && b.category[lang]) || (lang === 'es' ? 'Otros' : 'Other');
-        if (!groups[cat]) { groups[cat] = []; order.push(cat); }
-        groups[cat].push(b);
+        (byId[b.section] || fallback).items.push(b);
       });
-      order.sort(function (a, b) { return a.localeCompare(b, lang); });
 
-      /* net-grid becomes the container of trade groups */
+      /* net-grid becomes the container of curated sections */
       root.classList.remove('net-grid');
-      order.forEach(function (cat) {
+      var list = sections.map(function (s) { return byId[s.id]; }).concat([fallback]);
+      list.forEach(function (g) {
+        if (!g.items.length) return;
         var group = el('section', 'net-group');
         var head = el('div', 'net-group-head');
-        head.appendChild(el('span', 't', cat));
+        head.appendChild(el('span', 't', (g.def.label && g.def.label[lang]) || g.def.id));
         head.appendChild(el('div', 'rule'));
+        var star = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        star.setAttribute('width', '14'); star.setAttribute('height', '14');
+        star.setAttribute('viewBox', '0 0 24 24'); star.setAttribute('fill', '#C08A3E');
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', STAR);
+        star.appendChild(path);
+        head.appendChild(star);
         group.appendChild(head);
         var grid = el('div', 'net-grid');
-        groups[cat].forEach(function (b) { grid.appendChild(card(b)); });
+        g.items.forEach(function (b) { grid.appendChild(card(b)); });
         group.appendChild(grid);
         root.appendChild(group);
       });
