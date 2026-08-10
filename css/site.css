@@ -604,7 +604,7 @@ p { text-wrap: pretty; }
   .cards-3, .cards-2, .gallery-grid { grid-template-columns: 1fr; }
   .net-grid { grid-template-columns: repeat(2, 1fr); }
   .tips-grid { grid-template-columns: 1fr; }
-  .wordmark .crest { height: 58px; margin: -6px 0; }
+  .wordmark .crest { height: 48px; margin: -4px 0; }
   .stories-grid { grid-template-columns: 1fr; }
   .story .photo.r34 { aspect-ratio: 4/3; }
   .stories-head { flex-direction: column; align-items: flex-start; gap: 14px; }
@@ -622,7 +622,15 @@ p { text-wrap: pretty; }
   .timeline .dot { position: absolute; left: 0; top: 0; margin-bottom: 0; }
 
   /* nav drawer */
-  .site-header .bar { padding: 14px 24px; gap: 16px; flex-wrap: wrap; }
+  .site-header .bar { position: relative; padding: 14px 24px 36px; gap: 10px; flex-wrap: wrap; }
+  .wordmark { gap: 9px; }
+  .wordmark .name { font-size: 18px; }
+  .lang-toggle a { width: 34px; padding: 6px 0; }
+  .wm-tagline {
+    display: block; position: absolute; left: 24px; right: 24px; bottom: 9px;
+    max-width: none; border-left: none; padding-left: 0; margin: 0;
+    font-size: 12.5px; line-height: 1.3;
+  }
   .nav-burger { display: block; }
   .site-nav {
     display: none; width: 100%; flex-direction: column; align-items: flex-start;
