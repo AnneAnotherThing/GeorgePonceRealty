@@ -171,7 +171,7 @@ p { text-wrap: pretty; }
 .hero-flag img {
   width: 110%; height: 112%; margin: -5% 0 0 -4%; max-width: none; object-fit: cover;
   transform-origin: left center;
-  animation: flagWave 6.5s ease-in-out infinite alternate;
+  animation: flagWave 12s ease-in-out infinite alternate;
   will-change: transform;
 }
 @keyframes flagWave {
@@ -182,7 +182,7 @@ p { text-wrap: pretty; }
 .hero-flag::after {
   content: ""; position: absolute; inset: -25%;
   background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.15) 46%, transparent 60%);
-  animation: flagSheen 5.5s ease-in-out infinite alternate;
+  animation: flagSheen 10s ease-in-out infinite alternate;
 }
 @keyframes flagSheen {
   from { transform: translateX(-45%); }
