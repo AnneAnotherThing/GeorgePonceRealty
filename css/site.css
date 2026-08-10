@@ -335,6 +335,12 @@ p { text-wrap: pretty; }
   .j-card.j-final-card .j-photo { width: 100%; aspect-ratio: 4/3; }
 }
 
+/* Section "read more" links */
+.section-more { margin-top: 26px; font-size: 14.5px; font-weight: 600; }
+.section-more a { color: var(--red); }
+.section-more.on-navy a { color: var(--gold-light); }
+.section-more.on-navy a:hover { color: #fff; }
+
 /* Promise bar */
 .promise-bar {
   margin-top: 48px; padding: 30px 34px; background: var(--navy); border-radius: 6px;
