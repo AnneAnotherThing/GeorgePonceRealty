@@ -169,23 +169,24 @@ p { text-wrap: pretty; }
 /* Patriotic hero background: waving flag filling the section */
 .hero-flag { position: absolute; inset: 0; overflow: hidden; pointer-events: none; opacity: 0.34; }
 .hero-flag img {
-  width: 106%; height: 108%; margin: -3% 0 0 -3%; max-width: none; object-fit: cover;
+  width: 110%; height: 112%; margin: -5% 0 0 -4%; max-width: none; object-fit: cover;
   transform-origin: left center;
-  animation: flagWave 9s ease-in-out infinite alternate;
+  animation: flagWave 6.5s ease-in-out infinite alternate;
   will-change: transform;
 }
 @keyframes flagWave {
-  from { transform: skewY(-0.8deg) scale(1.02) translateY(-0.5%); }
-  to { transform: skewY(0.9deg) scale(1.05) translateY(0.6%); }
+  0%   { transform: skewY(-2deg) scale(1.02) translateY(-1%) rotate(-0.4deg); }
+  45%  { transform: skewY(0.6deg) scale(1.05) translateY(0.4%) rotate(0.2deg); }
+  100% { transform: skewY(2.2deg) scale(1.07) translateY(1.2%) rotate(0.5deg); }
 }
 .hero-flag::after {
   content: ""; position: absolute; inset: -25%;
-  background: linear-gradient(105deg, transparent 32%, rgba(255,255,255,0.11) 47%, transparent 62%);
-  animation: flagSheen 7.5s ease-in-out infinite alternate;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.15) 46%, transparent 60%);
+  animation: flagSheen 5.5s ease-in-out infinite alternate;
 }
 @keyframes flagSheen {
-  from { transform: translateX(-38%); }
-  to { transform: translateX(38%); }
+  from { transform: translateX(-45%); }
+  to { transform: translateX(45%); }
 }
 .hero-shade {
   position: absolute; inset: 0; pointer-events: none;
