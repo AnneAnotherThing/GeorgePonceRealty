@@ -30,6 +30,7 @@
     if (b.image) {
       var img = document.createElement('img');
       img.src = b.image; img.alt = b.name; img.loading = 'lazy';
+      img.width = 800; img.height = 420;
       imgWrap.appendChild(img);
     } else {
       imgWrap.className = 'net-img placeholder';

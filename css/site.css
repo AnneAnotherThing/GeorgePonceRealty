@@ -579,7 +579,7 @@ p { text-wrap: pretty; }
 /* Footer legal row */
 .footer-legal {
   max-width: 1200px; margin: 0 auto; padding: 0 32px 36px;
-  font-size: 12px; line-height: 1.7; color: rgba(255,255,255,0.38);
+  font-size: 12px; line-height: 1.7; color: rgba(255,255,255,0.58);
 }
 .footer-legal p { margin: 0 0 6px; }
 
