@@ -1,14 +1,21 @@
-/* Renders the trusted-network directory from /data/network.json,
-   grouped by trade (the per-language category field). One file drives
-   both the EN and ES pages; language comes from <html lang>. */
+/* George's Circle of Trust: renders /data/network.json into curated sections
+   with live search and section pills. One file drives EN and ES pages. */
 (function () {
   var lang = document.documentElement.lang === 'es' ? 'es' : 'en';
   var root = document.getElementById('net-grid');
   if (!root) return;
 
-  var T = lang === 'es'
-    ? { call: 'Llamar', site: 'Sitio web', demo: 'Demo' }
-    : { call: 'Call', site: 'Website', demo: 'Demo' };
+  var T = lang === 'es' ? {
+    call: 'Llamar', site: 'Sitio web', demo: 'Demo', all: 'Todos',
+    placeholder: 'Busque en el círculo… techos, plomero, préstamos',
+    count: function (n, t) { return 'Mostrando ' + n + ' de ' + t + ' negocios'; },
+    empty: 'Nada con ese nombre todavía. Llame a George al (623) 853-5241; si él no conoce a la persona indicada, conoce a alguien que sí.'
+  } : {
+    call: 'Call', site: 'Website', demo: 'Demo', all: 'All',
+    placeholder: 'Search the circle… roofer, plumber, loans',
+    count: function (n, t) { return 'Showing ' + n + ' of ' + t + ' businesses'; },
+    empty: "Nobody by that name yet. Call George at (623) 853-5241; if he doesn't know the right person, he knows somebody who does."
+  };
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -57,7 +64,7 @@
 
   var STAR = 'M12 1.6l2.9 6.5 7.1.7-5.3 4.7 1.5 7-6.2-3.6-6.2 3.6 1.5-7L2 8.8l7.1-.7z';
 
-  fetch('/data/network.json')
+  fetch('/data/network.json', { cache: 'no-cache' })
     .then(function (r) { return r.json(); })
     .then(function (data) {
       var sections = data.sections || [];
@@ -68,12 +75,14 @@
         (byId[b.section] || fallback).items.push(b);
       });
 
-      /* net-grid becomes the container of curated sections */
       root.classList.remove('net-grid');
-      var list = sections.map(function (s) { return byId[s.id]; }).concat([fallback]);
-      list.forEach(function (g) {
+      var groups = [];
+      var total = 0;
+
+      sections.map(function (s) { return byId[s.id]; }).concat([fallback]).forEach(function (g) {
         if (!g.items.length) return;
         var group = el('section', 'net-group');
+        group.dataset.section = g.def.id;
         var head = el('div', 'net-group-head');
         head.appendChild(el('span', 't', (g.def.label && g.def.label[lang]) || g.def.id));
         head.appendChild(el('div', 'rule'));
@@ -86,10 +95,69 @@
         head.appendChild(star);
         group.appendChild(head);
         var grid = el('div', 'net-grid');
-        g.items.forEach(function (b) { grid.appendChild(card(b)); });
+        var cards = g.items.map(function (b) {
+          var c = card(b);
+          c.dataset.hay = [
+            b.name, b.phone,
+            b.category && b.category.en, b.category && b.category.es,
+            b.blurb && b.blurb[lang]
+          ].join(' ').toLowerCase();
+          grid.appendChild(c);
+          total++;
+          return c;
+        });
         group.appendChild(grid);
         root.appendChild(group);
+        groups.push({ el: group, id: g.def.id, label: (g.def.label && g.def.label[lang]) || g.def.id, cards: cards });
       });
+
+      /* ---------- Toolbar: search + section pills + count ---------- */
+      var input = document.getElementById('net-search');
+      var pillsWrap = document.getElementById('net-pills');
+      var countEl = document.getElementById('net-count');
+      var emptyEl = document.getElementById('net-empty');
+      if (emptyEl) emptyEl.textContent = T.empty;
+      if (input) input.placeholder = T.placeholder;
+
+      var activeSection = 'all';
+
+      function apply() {
+        var term = (input && input.value || '').trim().toLowerCase();
+        var shown = 0;
+        groups.forEach(function (g) {
+          var sectionOn = activeSection === 'all' || g.id === activeSection;
+          var visible = 0;
+          g.cards.forEach(function (c) {
+            var hit = sectionOn && (!term || c.dataset.hay.indexOf(term) !== -1);
+            c.hidden = !hit;
+            if (hit) visible++;
+          });
+          g.el.hidden = visible === 0;
+          shown += visible;
+        });
+        if (countEl) countEl.textContent = T.count(shown, total);
+        if (emptyEl) emptyEl.hidden = shown !== 0;
+      }
+
+      if (pillsWrap) {
+        var mkPill = function (id, label) {
+          var b = el('button', 'tab-btn' + (id === 'all' ? ' on' : ''), label);
+          b.type = 'button';
+          b.dataset.section = id;
+          b.addEventListener('click', function () {
+            activeSection = id;
+            pillsWrap.querySelectorAll('.tab-btn').forEach(function (p) {
+              p.classList.toggle('on', p === b);
+            });
+            apply();
+          });
+          pillsWrap.appendChild(b);
+        };
+        mkPill('all', T.all);
+        groups.forEach(function (g) { mkPill(g.id, g.label); });
+      }
+      if (input) input.addEventListener('input', apply);
+      apply();
     })
     .catch(function () {
       root.appendChild(el('p', 'body-md', lang === 'es'

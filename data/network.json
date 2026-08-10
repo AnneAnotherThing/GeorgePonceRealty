@@ -1,64 +1,17 @@
 {
-  "updated": "2026-08-09",
+  "updated": "2026-08-10",
+  "sections": [
+    { "id": "buying", "label": { "en": "Buying your home", "es": "Para comprar su casa" } },
+    { "id": "house", "label": { "en": "Around the house", "es": "Para la casa" } },
+    { "id": "moving", "label": { "en": "Moving & settling in", "es": "Para mudarse y acomodarse" } },
+    { "id": "business", "label": { "en": "For your business", "es": "Para su negocio" } }
+  ],
   "businesses": [
-    {
-      "id": "hive-rise",
-      "name": "Hive-Rise",
-      "category": {
-        "en": "Web design & automation",
-        "es": "Diseño web y automatización"
-      },
-      "blurb": {
-        "en": "The web studio behind this site. Websites, booking and automation for small businesses across the valley, built by Anne in Surprise.",
-        "es": "El estudio web detrás de este sitio. Sitios, reservas y automatización para negocios pequeños de todo el valle, hecho por Anne en Surprise."
-      },
-      "phone": "(480) 440-2314",
-      "website": "https://hive-rise.com",
-      "image": "/img/network/hive-rise.webp",
-      "demo": false,
-      "section": "business"
-    },
-    {
-      "id": "sonoran-sun-inspection",
-      "name": "Sonoran Sun Home Inspection",
-      "category": {
-        "en": "Home inspections",
-        "es": "Inspecciones de casa"
-      },
-      "blurb": {
-        "en": "Licensed home inspections across the Phoenix metro, with clear reports and appointment reminders by text.",
-        "es": "Inspecciones de casa con licencia en todo el metro de Phoenix, con reportes claros y recordatorios de cita por texto."
-      },
-      "phone": "(623) 238-8007",
-      "website": "https://sonoransun.net/home-inspection",
-      "image": "/img/network/sonoran-inspection.webp",
-      "demo": false,
-      "section": "buying"
-    },
-    {
-      "id": "sonoran-sun-appliance",
-      "name": "Sonoran Sun Appliance Repair",
-      "category": {
-        "en": "Appliance repair",
-        "es": "Reparación de electrodomésticos"
-      },
-      "blurb": {
-        "en": "Home appliance repair in the West Valley. Honest diagnostics, fair quotes, and the same-day answers new homeowners need.",
-        "es": "Reparación de electrodomésticos en el West Valley. Diagnósticos honestos, precios justos, y las respuestas rápidas que un nuevo propietario necesita."
-      },
-      "phone": "(623) 238-8410",
-      "website": "https://sonoransun.net/appliance-repair",
-      "image": "/img/network/sonoran-appliance.webp",
-      "demo": false,
-      "section": "house"
-    },
     {
       "id": "demo-lender",
       "name": "Valley Sun Lending",
-      "category": {
-        "en": "Home loans",
-        "es": "Préstamos hipotecarios"
-      },
+      "section": "buying",
+      "category": { "en": "Home loans", "es": "Préstamos hipotecarios" },
       "blurb": {
         "en": "First-time buyer programs, FHA, and down-payment assistance, explained in English and Spanish.",
         "es": "Programas para compradores primerizos, FHA y ayuda con el enganche, explicados en español y en inglés."
@@ -66,16 +19,13 @@
       "phone": "(602) 555-0134",
       "website": "",
       "image": "",
-      "demo": true,
-      "section": "buying"
+      "demo": true
     },
     {
       "id": "demo-title",
       "name": "Saguaro Title Co.",
-      "category": {
-        "en": "Title & escrow",
-        "es": "Título y custodia"
-      },
+      "section": "buying",
+      "category": { "en": "Title & escrow", "es": "Título y custodia" },
       "blurb": {
         "en": "Closings that happen on time, with every line item explained before you sign.",
         "es": "Cierres a tiempo, con cada cargo explicado antes de firmar."
@@ -83,16 +33,69 @@
       "phone": "(602) 555-0177",
       "website": "",
       "image": "",
-      "demo": true,
-      "section": "buying"
+      "demo": true
+    },
+    {
+      "id": "sonoran-sun-inspection",
+      "name": "Sonoran Sun Home Inspection",
+      "section": "buying",
+      "category": { "en": "Home inspections", "es": "Inspecciones de casa" },
+      "blurb": {
+        "en": "Licensed home inspections across the Phoenix metro, with clear reports and appointment reminders by text.",
+        "es": "Inspecciones de casa con licencia en todo el metro de Phoenix, con reportes claros y recordatorios de cita por texto."
+      },
+      "phone": "(623) 238-8007",
+      "website": "https://sonoransun.net/home-inspection",
+      "image": "/img/network/sonoran-inspection.webp",
+      "demo": false
+    },
+    {
+      "id": "demo-insurance",
+      "name": "Camelback Home Insurance",
+      "section": "buying",
+      "category": { "en": "Homeowner's insurance", "es": "Seguro de casa" },
+      "blurb": {
+        "en": "Quotes from multiple carriers before closing, and a yearly review so coverage keeps up with the house.",
+        "es": "Cotizaciones de varias aseguradoras antes del cierre, y una revisión anual para que la cobertura no se quede atrás."
+      },
+      "phone": "(602) 555-0119",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-appraisal",
+      "name": "Cactus Wren Appraisals",
+      "section": "buying",
+      "category": { "en": "Appraisals", "es": "Avalúos" },
+      "blurb": {
+        "en": "Fair, defensible valuations, and plain answers when the number surprises anyone.",
+        "es": "Valuaciones justas y defendibles, y respuestas claras cuando el número sorprende a alguien."
+      },
+      "phone": "(602) 555-0188",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-credit",
+      "name": "Estrella Credit Coaching",
+      "section": "buying",
+      "category": { "en": "Credit counseling", "es": "Asesoría de crédito" },
+      "blurb": {
+        "en": "Nonprofit-style credit repair with no magic promises. The slow, honest way that actually works.",
+        "es": "Reparación de crédito sin promesas mágicas. El camino lento y honesto que sí funciona."
+      },
+      "phone": "(602) 555-0142",
+      "website": "",
+      "image": "",
+      "demo": true
     },
     {
       "id": "demo-ac",
       "name": "Cactus Cool Air",
-      "category": {
-        "en": "Heating & cooling",
-        "es": "Aire y calefacción"
-      },
+      "section": "house",
+      "category": { "en": "Heating & cooling", "es": "Aire y calefacción" },
       "blurb": {
         "en": "AC service and honest repair-or-replace advice, before the first 100-degree day.",
         "es": "Servicio de aire acondicionado y consejos honestos de reparar o reemplazar, antes del primer día de 100 grados."
@@ -100,31 +103,189 @@
       "phone": "(602) 555-0161",
       "website": "",
       "image": "",
-      "demo": true,
-      "section": "house"
-    }
-  ],
-  "sections": [
-    {
-      "id": "buying",
-      "label": {
-        "en": "Buying your home",
-        "es": "Para comprar su casa"
-      }
+      "demo": true
     },
     {
-      "id": "house",
-      "label": {
-        "en": "Around the house",
-        "es": "Para la casa"
-      }
+      "id": "sonoran-sun-appliance",
+      "name": "Sonoran Sun Appliance Repair",
+      "section": "house",
+      "category": { "en": "Appliance repair", "es": "Reparación de electrodomésticos" },
+      "blurb": {
+        "en": "Home appliance repair in the West Valley. Honest diagnostics, fair quotes, and the same-day answers new homeowners need.",
+        "es": "Reparación de electrodomésticos en el West Valley. Diagnósticos honestos, precios justos, y las respuestas rápidas que un nuevo propietario necesita."
+      },
+      "phone": "(623) 238-8410",
+      "website": "https://sonoransun.net/appliance-repair",
+      "image": "/img/network/sonoran-appliance.webp",
+      "demo": false
     },
     {
-      "id": "business",
-      "label": {
-        "en": "For your business",
-        "es": "Para su negocio"
-      }
+      "id": "demo-roofing",
+      "name": "Thunderbird Roofing",
+      "section": "house",
+      "category": { "en": "Roofing", "es": "Techos" },
+      "blurb": {
+        "en": "Tile and shingle repair that outlasts the monsoons, with photos of everything they fix.",
+        "es": "Reparación de teja y shingle que aguanta los monzones, con fotos de todo lo que arreglan."
+      },
+      "phone": "(602) 555-0125",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-plumbing",
+      "name": "Agua Fria Plumbing",
+      "section": "house",
+      "category": { "en": "Plumbing", "es": "Plomería" },
+      "blurb": {
+        "en": "From a dripping faucet to a slab leak, priced up front. They answer at 2am and don't punish you for it.",
+        "es": "Desde una llave que gotea hasta una fuga en la losa, con precio por adelantado. Contestan a las 2am y no se lo cobran caro."
+      },
+      "phone": "(602) 555-0193",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-electric",
+      "name": "Ocotillo Electric",
+      "section": "house",
+      "category": { "en": "Electrical", "es": "Electricidad" },
+      "blurb": {
+        "en": "Panel upgrades, ceiling fans, EV chargers. Licensed, insured, and tidy.",
+        "es": "Actualización de paneles, ventiladores de techo, cargadores de auto eléctrico. Con licencia, seguro, y ordenados."
+      },
+      "phone": "(602) 555-0157",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-landscape",
+      "name": "Palo Verde Landscaping",
+      "section": "house",
+      "category": { "en": "Desert landscaping", "es": "Paisajismo del desierto" },
+      "blurb": {
+        "en": "Low-water yards that look good in July. Gravel, irrigation, and shade trees that belong here.",
+        "es": "Patios de bajo consumo de agua que se ven bien en julio. Grava, riego, y árboles de sombra de los de aquí."
+      },
+      "phone": "(602) 555-0170",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-pool",
+      "name": "Splash Pool Care",
+      "section": "house",
+      "category": { "en": "Pool service", "es": "Servicio de alberca" },
+      "blurb": {
+        "en": "Weekly service, green-to-clean rescues, and straight talk about what that pump really needs.",
+        "es": "Servicio semanal, rescates de alberca verde, y la verdad sobre lo que esa bomba de verdad necesita."
+      },
+      "phone": "(602) 555-0136",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-pest",
+      "name": "Desert Shield Pest & Termite",
+      "section": "house",
+      "category": { "en": "Pest & termite control", "es": "Control de plagas y termitas" },
+      "blurb": {
+        "en": "Yearly termite inspections, scorpion sealing, and treatments safe for kids and dogs.",
+        "es": "Inspecciones anuales de termitas, sellado contra alacranes, y tratamientos seguros para niños y perros."
+      },
+      "phone": "(602) 555-0148",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-handyman",
+      "name": "Handy Javier",
+      "section": "house",
+      "category": { "en": "Handyman", "es": "Handyman" },
+      "blurb": {
+        "en": "The list of little things every house collects: done in an afternoon, charged fairly.",
+        "es": "La lista de cositas que toda casa junta: resuelta en una tarde, cobrada justo."
+      },
+      "phone": "(602) 555-0181",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-garage",
+      "name": "Sunset Garage Doors",
+      "section": "house",
+      "category": { "en": "Garage doors", "es": "Puertas de garaje" },
+      "blurb": {
+        "en": "Springs, openers, and full replacements, with same-week appointments.",
+        "es": "Resortes, motores, y reemplazos completos, con citas la misma semana."
+      },
+      "phone": "(602) 555-0164",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-movers",
+      "name": "Two Saguaros Moving",
+      "section": "moving",
+      "category": { "en": "Movers", "es": "Mudanzas" },
+      "blurb": {
+        "en": "Careful crews, flat quotes, and nothing arrives broken. They've moved half my closings.",
+        "es": "Equipos cuidadosos, precios fijos, y nada llega roto. Han hecho la mudanza de la mitad de mis cierres."
+      },
+      "phone": "(602) 555-0112",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-storage",
+      "name": "West Valley Storage",
+      "section": "moving",
+      "category": { "en": "Storage", "es": "Almacenamiento" },
+      "blurb": {
+        "en": "Clean, climate-controlled units for the gap between homes. Month to month, no games.",
+        "es": "Unidades limpias con clima controlado para el tiempo entre casas. Mes a mes, sin trucos."
+      },
+      "phone": "(602) 555-0129",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "demo-cleaning",
+      "name": "Maria's Deep Clean",
+      "section": "moving",
+      "category": { "en": "Move-in cleaning", "es": "Limpieza de mudanza" },
+      "blurb": {
+        "en": "The house is spotless before your furniture arrives. Move-out cleans too, so deposits come back.",
+        "es": "La casa queda impecable antes de que lleguen sus muebles. También limpieza de salida, para que le regresen el depósito."
+      },
+      "phone": "(602) 555-0153",
+      "website": "",
+      "image": "",
+      "demo": true
+    },
+    {
+      "id": "hive-rise",
+      "name": "Hive-Rise",
+      "section": "business",
+      "category": { "en": "Web design & automation", "es": "Diseño web y automatización" },
+      "blurb": {
+        "en": "The web studio behind this site. Websites, booking and automation for small businesses across the valley, built by Anne in Surprise.",
+        "es": "El estudio web detrás de este sitio. Sitios, reservas y automatización para negocios pequeños de todo el valle, hecho por Anne en Surprise."
+      },
+      "phone": "(480) 440-2314",
+      "website": "https://hive-rise.com",
+      "image": "/img/network/hive-rise.webp",
+      "demo": false
     }
   ]
 }

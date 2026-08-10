@@ -478,6 +478,26 @@ p { text-wrap: pretty; }
 .footer-grid .links a { color: rgba(255,255,255,0.62); }
 .footer-grid .links a:hover { color: #fff; text-decoration: none; }
 
+/* Circle of Trust toolbar: search + pills */
+.net-toolbar { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+.net-toolbar .row1 { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.net-search { position: relative; flex: 1; min-width: 250px; max-width: 470px; }
+.net-search svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.net-search input {
+  width: 100%; border: 1px solid var(--hairline-strong); border-radius: 999px;
+  padding: 13px 18px 13px 42px; font-size: 14.5px; font-family: var(--sans);
+  background: var(--white); color: var(--ink); outline: none;
+}
+.net-search input::placeholder { color: var(--grey-ph); }
+.net-search input:hover, .net-search input:focus { border-color: var(--gold); }
+.net-count { font-size: 13px; color: var(--ink-light); white-space: nowrap; }
+.net-pills { margin-bottom: 0; }
+.net-empty {
+  background: var(--white); border: 1px solid var(--hairline); border-radius: 6px;
+  padding: 26px 28px; font-size: 15px; line-height: 1.6; color: var(--ink-muted);
+}
+[hidden] { display: none !important; }
+
 /* Circle of Trust cards (compact, curated sections) */
 .net-group { margin-bottom: 46px; }
 .net-group:last-child { margin-bottom: 0; }
