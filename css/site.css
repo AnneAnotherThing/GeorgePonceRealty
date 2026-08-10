@@ -57,7 +57,7 @@ p { text-wrap: pretty; }
 }
 .wordmark { display: flex; align-items: center; gap: 11px; margin-right: auto; text-decoration: none; }
 .wordmark:hover { text-decoration: none; }
-.wordmark .crest { height: 68px; width: auto; display: block; margin: -6px 0; }
+.wordmark .crest { height: 84px; width: auto; display: block; margin: -12px 0; }
 .wordmark .wm-text { display: flex; flex-direction: column; gap: 1px; }
 .wordmark .name { font-family: var(--serif); font-size: 21px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
 .wordmark .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
@@ -159,6 +159,32 @@ p { text-wrap: pretty; }
 }
 .video-card .caption .label { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light); }
 .video-card .caption .time { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+/* Patriotic hero background: real client flag photo, slow drift */
+.hero-photo-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: url('/img/family-porch-flag.webp') center 30% / cover no-repeat;
+  opacity: 0.17;
+  animation: heroDrift 38s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes heroDrift {
+  from { transform: scale(1.02) translateX(0); }
+  to { transform: scale(1.11) translateX(-2%); }
+}
+.hero-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(16,32,61,0.94) 0%, rgba(16,32,61,0.55) 55%, rgba(16,32,61,0.82) 100%);
+}
+@media (prefers-reduced-motion: reduce) { .hero-photo-bg { animation: none; } }
+
+/* Shield placements: footer tile + form trust mark */
+.footer-crest {
+  display: inline-flex; background: var(--cream); border-radius: 8px;
+  padding: 10px 12px; margin-bottom: 14px;
+}
+.footer-crest img { height: 66px; width: auto; display: block; }
+.form-crest { height: 48px; width: auto; display: block; margin: 0 auto 16px; }
 
 /* Video-look hero: George cutout in a lit studio well + player chrome */
 .video-card .well.gp-studio { background: radial-gradient(120% 95% at 50% 20%, #22406E 0%, #16294B 48%, #0B1729 100%); }
@@ -521,7 +547,7 @@ p { text-wrap: pretty; }
   .cards-3, .cards-2, .gallery-grid { grid-template-columns: 1fr; }
   .net-grid { grid-template-columns: repeat(2, 1fr); }
   .tips-grid { grid-template-columns: 1fr; }
-  .wordmark .crest { height: 50px; margin: -3px 0; }
+  .wordmark .crest { height: 58px; margin: -6px 0; }
   .stories-grid { grid-template-columns: 1fr; }
   .story .photo.r34 { aspect-ratio: 4/3; }
   .stories-head { flex-direction: column; align-items: flex-start; gap: 14px; }
