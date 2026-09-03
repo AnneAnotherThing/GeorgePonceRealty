@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/css/site.css?v=20260810r">
+<link rel="stylesheet" href="/css/site.css?v=20260901">
 </head>
 <body>
 
@@ -28,9 +28,8 @@
       <img class="crest" src="/img/logo-shield.webp" alt="George Ponce Realty" width="444" height="475">
       <span class="wm-text">
         <span class="name">George Ponce</span>
-        <span class="tag">Realty</span>
+        <span class="tag">Bilingual Realtor</span>
       </span>
-      <span class="wm-tagline"><span class="tl-l">Helping People Achieve</span> <span class="tl-l">the American Dream</span></span>
     </a>
     <button class="nav-burger" aria-label="Menu" aria-expanded="false">
       <svg width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="#10203D" stroke-width="2"><path d="M0 1h20M0 8h20M0 15h20"/></svg>
@@ -39,8 +38,10 @@
       <a href="/">Home</a>
       <a href="/renting.html">Renting</a>
       <a href="/buying.html">Buying</a>
+      <a href="/listing.html">Listing</a>
+      <a href="/investing.html">Investing</a>
       <a href="/#stories">Client Stories</a>
-      <a href="/network.html">Circle of Trust</a>
+      <a href="/network.html">Resources You Can Use</a>
       <a href="/about.html">Meet George</a>
     </nav>
     <div class="header-actions">
@@ -67,7 +68,175 @@
 
 <div class="stripe-rule-red"></div>
 
-<section class="section">
+<section class="section" id="qualify">
+  <div class="section-intro">
+    <span class="eyebrow">Do you qualify?</span>
+    <h2 class="h2">Wondering if you'd qualify to rent?</h2>
+    <p class="body-lg">About 90% of listings check the same five things. Look them over, check your numbers, and don't panic if one isn't perfect &mdash; that's exactly what I'm here for.</p>
+  </div>
+  <div class="cards-2">
+    <div class="info-card">
+      <p class="title">1. Credit score</p>
+      <p>Every adult 18 and over applies, and application fees run $35&ndash;$60 per adult. Each person needs a credit score over 580, and some listings ask for 620 or better.</p>
+      <p>Don't know your score? Check it free at <a href="https://www.creditkarma.com" rel="noopener" target="_blank">Credit Karma</a> or <a href="https://www.creditwise.com" rel="noopener" target="_blank">CreditWise</a> &mdash; it doesn't affect your credit. Take a screenshot for each adult; I'll ask for them when we talk.</p>
+    </div>
+    <div class="info-card">
+      <p class="title">2. Background check</p>
+      <p>No evictions, felonies, bankruptcies, or judgments in the last 5 years. If something on your record is older than that, or you're not sure how it reads, tell me &mdash; older items age off and there's usually a path.</p>
+    </div>
+    <div class="info-card">
+      <p class="title">3. Income</p>
+      <p>You and the other adults together need to show at least 3 times the rent. If the listing is $2,000, we need proof of $6,000 a month in gross income. Self-employed? That works too &mdash; we'll use two years of tax returns.</p>
+    </div>
+    <div class="info-card">
+      <p class="title">4. Rental history</p>
+      <p>Landlords check two years of rental history. They'll call your current and past landlords to ask if you paid on time, whether there were issues or damages, and whether they'd rent to you again.</p>
+    </div>
+    <div class="info-card">
+      <p class="title">5. Pets</p>
+      <p>Most properties accept dogs but not cats, and every listing is different. Tell me the number, type, breed and weight up front and I'll only show you places where your whole family is welcome.</p>
+    </div>
+    <div class="info-card">
+      <p class="title">Why I check first</p>
+      <p>Application fees are non-refundable, so I never want to show you a property that already has multiple applications &mdash; that's a waste of your time and your money. My listings come from the MLS and reputable companies, so they're current and scam-free.</p>
+    </div>
+  </div>
+  <div class="promise-bar">
+    <div class="gold-rule"></div>
+    <p>Don't worry if you don't meet every requirement. I can still help you &mdash; I just need to talk to you first.</p>
+    <span class="attr">&mdash; George Ponce</span>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0" id="questionnaire">
+  <div class="form-grid">
+    <div class="form-left">
+      <span class="eyebrow">Renter questionnaire</span>
+      <h2 class="h2-38">Let's set up your search</h2>
+      <p class="body-md">These are the questions I ask every renter so I can build a list of homes that actually fit. Answer what you can &mdash; your answers come straight to me, and I'll follow up the same day.</p>
+      <div class="reassure">
+        <div class="row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C08A3E" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>No credit pull, and no effect on your score.</span>
+        </div>
+        <div class="row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C08A3E" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Your answers go to George, not a call center.</span>
+        </div>
+        <div class="row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C08A3E" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>English or Spanish, whichever is easier.</span>
+        </div>
+      </div>
+    </div>
+    <form class="form-panel" id="rq-form" novalidate>
+      <img class="form-crest" src="/img/logo-shield.webp" alt="" width="444" height="475">
+      <div class="fields on">
+        <div class="field">
+          <label for="rq-name">What's your name?</label>
+          <input id="rq-name" name="name" type="text" placeholder="First and last name" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="rq-lease">When is your lease up?</label>
+          <input id="rq-lease" name="lease_end" type="text" placeholder="Month and year, or &ldquo;month to month&rdquo;">
+        </div>
+        <div class="field">
+          <label for="rq-keys">When do you need the keys to your new place?</label>
+          <input id="rq-keys" name="move_date" type="text" placeholder="A date, or &ldquo;as soon as possible&rdquo;">
+        </div>
+        <div class="field">
+          <label for="rq-rent">What are you paying now?</label>
+          <input id="rq-rent" name="current_rent" type="text" inputmode="numeric" placeholder="$1,400, or &ldquo;staying with family&rdquo;">
+        </div>
+        <div class="field">
+          <label for="rq-budget">What's your budget?</label>
+          <input id="rq-budget" name="budget" type="text" inputmode="numeric" placeholder="$1,800 a month">
+        </div>
+        <div class="field">
+          <label for="rq-type">Looking for a home, or a townhouse/condo?</label>
+          <select id="rq-type" name="home_type">
+            <option value="" selected>Pick one</option>
+            <option>House</option>
+            <option>Townhouse or condo</option>
+            <option>Either one</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rq-beds">How many bedrooms and bathrooms?</label>
+          <input id="rq-beds" name="beds_baths" type="text" placeholder="3 bed, 2 bath">
+        </div>
+        <div class="field">
+          <label for="rq-stories">Do you care if it's one or two stories?</label>
+          <select id="rq-stories" name="stories">
+            <option value="" selected>Pick one</option>
+            <option>One story only</option>
+            <option>Two stories is fine</option>
+            <option>No preference</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rq-pets">Do you have pets?</label>
+          <div class="help">How many, what type, breed and weight. Write &ldquo;none&rdquo; if not.</div>
+          <input id="rq-pets" name="pets" type="text" placeholder="One dog, lab mix, 45 lbs">
+        </div>
+        <div class="field">
+          <label for="rq-area">Is there a particular area you'd like to live in?</label>
+          <input id="rq-area" name="area" type="text" placeholder="A city, zip code, or school district">
+        </div>
+        <div class="field">
+          <label for="rq-features">Any special features you need?</label>
+          <input id="rq-features" name="features" type="text" placeholder="Garage, pool, RV gate&hellip;">
+        </div>
+        <div class="field">
+          <label for="rq-appliances">Do you need a refrigerator, washer, or dryer?</label>
+          <div class="help">Rentals sometimes don't include them.</div>
+          <input id="rq-appliances" name="appliances" type="text" placeholder="Need all three / have my own">
+        </div>
+        <div class="field">
+          <label for="rq-applied">Have you recently seen or applied for a rental?</label>
+          <div class="help">If you were denied, say so &mdash; it changes nothing between us, and it helps me help you.</div>
+          <input id="rq-applied" name="applied" type="text" placeholder="Applied last month / just starting">
+        </div>
+        <div class="field">
+          <label for="rq-adults">How many adults will be applying?</label>
+          <select id="rq-adults" name="adults">
+            <option value="" selected>Pick one</option>
+            <option>Just me</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4 or more</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rq-credit">Do you know your credit score?</label>
+          <div class="help">Check it free at Credit Karma or CreditWise, or pick &ldquo;not sure.&rdquo;</div>
+          <select id="rq-credit" name="credit">
+            <option value="" selected>Pick a range, or &ldquo;not sure&rdquo;</option>
+            <option>Not sure</option>
+            <option>Below 580</option>
+            <option>580&ndash;639</option>
+            <option>640&ndash;699</option>
+            <option>700 or above</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rq-phone">What's the best number for you?</label>
+          <input id="rq-phone" name="phone" type="tel" placeholder="(602) 555-0123" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="rq-email">And your email?</label>
+          <input id="rq-email" name="email" type="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+      </div>
+      <div class="form-footer">
+        <button class="btn btn-navy" type="submit">Send my answers to George</button>
+      </div>
+      <p class="form-msg"></p>
+    </form>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0">
   <div class="split">
     <div>
       <span class="eyebrow">How it works</span>
@@ -235,9 +404,11 @@
       <div class="links">
         <a href="/renting.html">Renting</a>
         <a href="/buying.html">Buying</a>
+        <a href="/listing.html">Listing</a>
+        <a href="/investing.html">Investing</a>
         <a href="https://george-ponce.sites.c21.homes/search/#!/defaultsearch:true" target="_blank" rel="noopener">Search Homes</a>
         <a href="/homeowners.html">Homeowners</a>
-        <a href="/network.html">Circle of Trust</a>
+        <a href="/network.html">Resources You Can Use</a>
         <a href="/#start">Get Started</a>
       </div>
     </div>
@@ -256,6 +427,6 @@
   </div>
 </footer>
 
-<script src="/js/site.js?v=20260810r"></script>
+<script src="/js/site.js?v=20260901"></script>
 </body>
 </html>

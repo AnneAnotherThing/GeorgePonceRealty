@@ -20,6 +20,7 @@ export async function onRequestPost(context) {
   }
 
   const isNewsletter = data.type === "newsletter";
+  const isQuestionnaire = data.type === "questionnaire";
   const lang = data.lang === "es" ? "Spanish" : "English";
 
   if (!isNewsletter && !data.phone && !data.email && !data.name) {
@@ -31,10 +32,34 @@ export async function onRequestPost(context) {
 
   const subject = isNewsletter
     ? `Newsletter signup (${lang}): ${data.email}`
+    : isQuestionnaire
+    ? `Renter questionnaire (${lang}): ${data.name || "no name"} - ${data.area || "no area"}`
     : `New lead (${lang}): ${data.name || "no name"} - ${data.area || "no area"}`;
 
   const rows = isNewsletter
     ? [["Email", data.email], ["Language", lang], ["Page", data.page]]
+    : isQuestionnaire
+    ? [
+        ["Name", data.name],
+        ["Lease up", data.lease_end],
+        ["Needs keys by", data.move_date],
+        ["Paying now", data.current_rent],
+        ["Budget", data.budget],
+        ["Home type", data.home_type],
+        ["Beds / baths", data.beds_baths],
+        ["Stories", data.stories],
+        ["Pets", data.pets],
+        ["Area", data.area],
+        ["Special features", data.features],
+        ["Appliances needed", data.appliances],
+        ["Recently seen/applied", data.applied],
+        ["Adults applying", data.adults],
+        ["Credit range", data.credit],
+        ["Phone", data.phone],
+        ["Email", data.email],
+        ["Language", lang],
+        ["Page", data.page],
+      ]
     : [
         ["Name", data.name],
         ["Looking in", data.area],

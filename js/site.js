@@ -144,6 +144,49 @@
     show(current);
   }
 
+  /* ---------- Renter questionnaire (renting page) ---------- */
+  var rq = document.getElementById('rq-form');
+  if (rq) {
+    var rqMsg = rq.querySelector('.form-msg');
+    var RT = LANG === 'es' ? {
+      sending: 'Enviando…',
+      ok: '¡Listo! George recibió sus respuestas y le contacta pronto, normalmente el mismo día.',
+      err: 'No se pudo enviar en este momento. Llámeme o envíeme un texto al (623) 853-5241, o escriba a george@georgeponcerealty.com.',
+      need: 'Déjeme un teléfono o un correo para poder responderle.'
+    } : {
+      sending: 'Sending…',
+      ok: 'Done! George has your answers and will reach out soon, usually the same day.',
+      err: 'That didn’t go through. Call or text me at (623) 853-5241, or email george@georgeponcerealty.com.',
+      need: 'Leave a phone number or an email so I can get back to you.'
+    };
+    rq.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = { type: 'questionnaire' };
+      rq.querySelectorAll('input, select, textarea').forEach(function (el) {
+        if (el.name) data[el.name] = el.value;
+      });
+      if (!data.phone && !data.email) {
+        if (rqMsg) { rqMsg.textContent = RT.need; rqMsg.className = 'form-msg err'; }
+        return;
+      }
+      data.lang = LANG;
+      data.page = window.location.pathname;
+      if (rqMsg) { rqMsg.textContent = RT.sending; rqMsg.className = 'form-msg'; }
+      fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (r) {
+        if (!r.ok) throw new Error('bad status');
+        if (rqMsg) { rqMsg.textContent = RT.ok; rqMsg.className = 'form-msg ok'; }
+        var btn = rq.querySelector('button[type="submit"]');
+        if (btn) btn.style.display = 'none';
+      }).catch(function () {
+        if (rqMsg) { rqMsg.textContent = RT.err; rqMsg.className = 'form-msg err'; }
+      });
+    });
+  }
+
   /* ---------- Affordability calculator (buying page) ---------- */
   var calc = document.getElementById('afford-calc');
   if (calc) {

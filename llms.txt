@@ -10,10 +10,12 @@ Office: 16040 N 59th Ave, Glendale, AZ 85306. License SA66163000 AZ.
 
 ## Pages
 
-- [Home](https://georgeponcerealty.com/): the two paths (renting now, ready to buy) and the get-started form
-- [Renting](https://georgeponcerealty.com/renting.html): how the rental-to-ownership plan works, credit guide, FAQ
-- [Buying](https://georgeponcerealty.com/buying.html): affordability calculator, the six-stage buyer journey
+- [Home](https://georgeponcerealty.com/): the four paths (rent, buy, sell, invest) and the get-started form
+- [Renting](https://georgeponcerealty.com/renting.html): rental qualification requirements, renter questionnaire, how the rental-to-ownership plan works, credit guide, FAQ
+- [Buying](https://georgeponcerealty.com/buying.html): affordability calculator, debt-to-income resources, the six-stage buyer journey
+- [Listing](https://georgeponcerealty.com/listing.html): selling your home with George, from comps to closing
+- [Investing](https://georgeponcerealty.com/investing.html): first rental properties and long-term plans in the Phoenix valley
 - [Homeowners](https://georgeponcerealty.com/homeowners.html): flag care, seasonal Arizona maintenance checklists, homeowner tips
-- [Circle of Trust](https://georgeponcerealty.com/network.html): vetted local businesses George refers personally
+- [Resources You Can Use](https://georgeponcerealty.com/network.html): vetted local businesses George refers personally
 - [Meet George](https://georgeponcerealty.com/about.html): his story and how he works
 - [Spanish site](https://georgeponcerealty.com/es/): every page fully in Spanish

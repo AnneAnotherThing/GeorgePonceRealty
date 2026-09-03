@@ -13,6 +13,14 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://georgeponcerealty.com/es/comprar.html"/>
   </url>
   <url>
+    <loc>https://georgeponcerealty.com/listing.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://georgeponcerealty.com/es/vender.html"/>
+  </url>
+  <url>
+    <loc>https://georgeponcerealty.com/investing.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://georgeponcerealty.com/es/invertir.html"/>
+  </url>
+  <url>
     <loc>https://georgeponcerealty.com/homeowners.html</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://georgeponcerealty.com/es/propietarios.html"/>
   </url>
@@ -36,6 +44,8 @@
   <url><loc>https://georgeponcerealty.com/es/red.html</loc></url>
   <url><loc>https://georgeponcerealty.com/es/alquiler.html</loc></url>
   <url><loc>https://georgeponcerealty.com/es/comprar.html</loc></url>
+  <url><loc>https://georgeponcerealty.com/es/vender.html</loc></url>
+  <url><loc>https://georgeponcerealty.com/es/invertir.html</loc></url>
   <url><loc>https://georgeponcerealty.com/es/propietarios.html</loc></url>
   <url><loc>https://georgeponcerealty.com/es/sobre-george.html</loc></url>
   <url><loc>https://georgeponcerealty.com/es/contacto.html</loc></url>
