@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/css/site.css?v=20260901">
+<link rel="stylesheet" href="/css/site.css?v=20260903">
 </head>
 <body>
 
@@ -73,6 +73,11 @@
     <span class="eyebrow">¿Califica usted?</span>
     <h2 class="h2">¿Se pregunta si calificaría para alquilar?</h2>
     <p class="body-lg">Cerca del 90% de los listados revisan las mismas cinco cosas. Léalas, revise sus números, y no se preocupe si algo no está perfecto &mdash; para eso estoy yo.</p>
+  </div>
+  <div class="qc-wrap">
+    <button class="btn btn-gold qc-launch" id="qc-launch" type="button">Use nuestro Verificador de Requisitos interactivo</button>
+    <p class="qc-note">Cinco preguntas rápidas, dos minutos. &laquo;Lo reviso después&raquo; siempre es una respuesta &mdash; nada aquí lo descalifica.</p>
+    <div id="qc" hidden></div>
   </div>
   <div class="cards-2">
     <div class="info-card">
@@ -130,6 +135,7 @@
       </div>
     </div>
     <form class="form-panel" id="rq-form" novalidate>
+      <input type="hidden" name="qualify_summary">
       <img class="form-crest" src="/img/logo-shield.webp" alt="" width="444" height="475">
       <div class="fields on">
         <div class="field">
@@ -427,6 +433,6 @@
   </div>
 </footer>
 
-<script src="/js/site.js?v=20260901"></script>
+<script src="/js/site.js?v=20260903"></script>
 </body>
 </html>

@@ -45,6 +45,7 @@ exports.handler = async (event) => {
     : isQuestionnaire
     ? [
         ["Name", data.name],
+        ["Qualify check", data.qualify_summary],
         ["Lease up", data.lease_end],
         ["Needs keys by", data.move_date],
         ["Paying now", data.current_rent],
