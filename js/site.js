@@ -1191,17 +1191,25 @@
   var calc = document.getElementById('afford-calc');
   if (calc) {
     var out = document.getElementById('calc-out');
+    var tight = document.getElementById('calc-tight');
     calc.addEventListener('submit', function (e) {
       e.preventDefault();
       var income = parseFloat(calc.income.value.replace(/[^0-9.]/g, '')) || 0;
       var debts = parseFloat(calc.debts.value.replace(/[^0-9.]/g, '')) || 0;
       var down = parseFloat(calc.down.value.replace(/[^0-9.]/g, '')) || 0;
-      if (income <= 0) { out.style.display = 'none'; return; }
+      if (income <= 0) { out.style.display = 'none'; if (tight) tight.style.display = 'none'; return; }
 
       /* Classic 28/36 guideline, 30-yr fixed at an assumed rate, taxes+insurance ~1.6%/yr. */
       var RATE = 0.0675 / 12, N = 360, TI = 0.016 / 12;
       var maxHousing = Math.min(income * 0.28, Math.max(income * 0.36 - debts, 0));
-      if (maxHousing <= 0) { out.style.display = 'none'; return; }
+      if (maxHousing <= 0) {
+        /* Debts eat the whole 36% guideline. Never fail silently — this is
+           exactly the visitor George most wants to hear from. */
+        out.style.display = 'none';
+        if (tight) tight.style.display = 'block';
+        return;
+      }
+      if (tight) tight.style.display = 'none';
       var f = Math.pow(1 + RATE, N);
       var perDollar = (RATE * f) / (f - 1); /* P&I per $1 of loan */
       var loan = maxHousing / (perDollar + TI);
