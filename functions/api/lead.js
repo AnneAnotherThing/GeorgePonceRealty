@@ -64,6 +64,7 @@ export async function onRequestPost(context) {
     : [
         ["Name", data.name],
         ["Buy-ready check", data.buy_summary],
+        ["Home-worth check", data.sell_summary],
         ["Looking in", data.area],
         ["Monthly income", data.income],
         ["Credit range", data.credit],

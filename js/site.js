@@ -128,6 +128,7 @@
       /* If they worked the Ready-to-Buy Checker on the buying page, their
          readout rides along to George. */
       try { var buySum = localStorage.getItem('gp-bqc-summary'); if (buySum) data.buy_summary = buySum; } catch (err) {}
+      try { var sellSum = localStorage.getItem('gp-sqc-summary'); if (sellSum) data.sell_summary = sellSum; } catch (err) {}
       if (msg) { msg.textContent = T.sending; msg.className = 'form-msg'; }
       fetch('/api/lead', {
         method: 'POST',
@@ -886,6 +887,304 @@
 
     /* Finished on an earlier visit: quietly re-arm the summary for the form. */
     if (Object.keys(bAns).length) bStoreSummary();
+  }
+
+  /* ---------- Home-Worth Checker (listing page interactive walkthrough) ----------
+     The seller sibling of the Qualify / Ready-to-Buy checkers: five questions,
+     one at a time, "later" always an answer, never a verdict. The equity step
+     does live walk-away math from the seller's own guess. Results ride to
+     George as sell_summary on the get-started form. */
+  var sqcHost = document.getElementById('sqc');
+  var sqcLaunch = document.getElementById('sqc-launch');
+  if (sqcHost && sqcLaunch) {
+    var ST = LANG === 'es' ? {
+      title: '¿Cuánto Vale Su Casa?',
+      later: 'Lo reviso después',
+      back: '← Atrás',
+      kickers: { owned: 'Paso 1 · Tiempo con la casa', equity: 'Paso 2 · La cuenta del capital', condition: 'Paso 3 · Condición', timeline: 'Paso 4 · Calendario', next: 'Paso 5 · Siguiente paso' },
+      ownedQ: '¿Cuánto tiempo lleva con la casa?',
+      ownedSub: 'El tiempo construye capital. No hay respuesta mala aquí.',
+      ownedA: 'Menos de 2 años', ownedAH: 'Vale la pena revisar tiempos e impuestos antes de listar.',
+      ownedB: '2–5 años', ownedC: '5–15 años', ownedD: 'Más de 15 años',
+      eqQ: 'Hagamos la cuenta que importa',
+      eqSub: 'Su instinto sobre el valor está bien &mdash; el número real sale de los comparables de George, y ese análisis es gratis. Números aproximados funcionan.',
+      eqLabel1: '¿En cuánto cree que se vendería hoy?', eqPh1: '$400,000',
+      eqLabel2: '¿Cuánto queda de la hipoteca? (0 si está pagada)', eqPh2: '$220,000',
+      eqBtn: 'Haga la cuenta',
+      eqMath: function (net, worth) { return 'Con su cálculo de <strong>' + worth + '</strong>, después de pagar la hipoteca y los costos típicos de venta (~8%), usted saldría con alrededor de <strong>' + net + '</strong>.'; },
+      eqTight: 'Con su cálculo, los costos de venta se comerían el capital. No lo tome como final &mdash; su cifra es el número más débil de esta cuenta, y los comparables muchas veces la superan. George ha navegado ventas con capital apretado.',
+      eqMore: 'Más de lo que pensaba', eqExpected: 'Más o menos lo que calculaba',
+      eqLess: 'Menos de lo que esperaba', eqLessH: 'Su cifra es el número más débil aquí &mdash; los comparables suelen dar sorpresas buenas.',
+      condQ: '¿Cómo está la casa hoy?',
+      condSub: 'Sea honesto &mdash; cada condición tiene su estrategia de venta.',
+      condReady: 'Lista para estrenar', condLove: 'Le falta un poco de cariño', condLoveH: 'George solo recomienda arreglos que se pagan solos.',
+      condWork: 'Necesita trabajo de verdad', condWorkH: 'Vender tal como está es una opción real.',
+      condTenant: 'Tiene inquilinos ahora', condTenantH: 'Se puede vender &mdash; el calendario solo necesita coreografía.',
+      timeQ: '¿Para cuándo lo está pensando?',
+      timeSub: '«Solo curiosidad» es una respuesta excelente. De este lado no hay presión.',
+      timeNow: 'Listo ya', timeSix: 'En los próximos 6 meses',
+      timeCur: 'Solo curiosidad', timeCurH: 'La curiosidad es el mejor momento para planear.',
+      nextQ: '¿A dónde iría después?',
+      nextSub: 'La respuesta cambia el plan más de lo que la gente cree.',
+      nextBigger: 'Comprar la siguiente casa aquí', nextBiggerH: 'Vender y comprar a la vez es la especialidad de George &mdash; una conversación cubre las dos.',
+      nextSmaller: 'Algo más pequeño', nextLeaving: 'Salir de Arizona', nextUnsure: 'Todavía no sé',
+      resultKicker: 'Su lectura', resultQ: 'Así se ve su venta hoy',
+      resultSub: 'Esto no es un avalúo &mdash; es el punto de partida de la conversación con George.',
+      labels: { owned: 'Tiempo', equity: 'Capital', condition: 'Condición', timeline: 'Calendario', next: 'Siguiente paso' },
+      laterV: 'Lo revisará después &mdash; sin problema, no es un requisito para hablar con George.',
+      ownedV: { under2: 'Menos de 2 años &mdash; revise tiempos e impuestos antes de listar; George lo camina con usted.', '2to5': '2–5 años &mdash; el capital ha tenido tiempo de crecer.', '5to15': '5–15 años &mdash; territorio primo de capital.', '15plus': 'Más de 15 años &mdash; esta venta probablemente es un momento financiero grande. Hay que tratarla así.' },
+      eqV: { more: 'Más capital del que pensaba &mdash; un buen problema.', expected: 'Más o menos lo que calculaba &mdash; pulso firme.', less: 'Menos de lo que esperaba &mdash; recuerde: su cifra es el número más débil; los comparables suelen superarla.' },
+      eqShort: function (net) { return ' (~' + net + ' suyos, según su cálculo)'; },
+      eqShortTight: ' (apretado según su cálculo &mdash; los comparables deciden)',
+      condV: { ready: 'Lista para estrenar &mdash; las fotos harán el trabajo pesado.', love: 'Un poco de cariño &mdash; George solo recomienda arreglos que se pagan solos.', work: 'Trabajo de verdad &mdash; vender tal como está es una opción real; el precio lo toma en cuenta.', tenant: 'Con inquilinos &mdash; se vende; el calendario solo necesita coreografía.' },
+      timeV: { now: 'Listo ya &mdash; el análisis de comparables es el trabajo de las próximas 48 horas.', six: 'A seis meses &mdash; la ventana perfecta de preparación.', curious: 'Solo curiosidad &mdash; el mejor tipo de conversación de venta. Sin presión de este lado.' },
+      nextV: { bigger: 'Vender y comprar aquí &mdash; un solo plan cubre los dos lados.', smaller: 'Algo más pequeño &mdash; liberar capital para el siguiente capítulo.', leaving: 'Salir de Arizona &mdash; George coordina con un agente donde usted aterrice.', unsure: 'Todavía no sabe &mdash; los números normalmente ayudan a decidir.' },
+      promise: '“El número real no sale de un sitio web — sale de los comparables. El mío es gratis, y viene sin presión para listar.” — George',
+      cta: 'Llevar mis respuestas a George →',
+      restart: 'Empezar de nuevo',
+      sumLabels: { later: 'lo revisa después' }
+    } : {
+      title: 'Home-Worth Checker',
+      later: "I'll check that later",
+      back: '← Back',
+      kickers: { owned: 'Step 1 · Time owned', equity: 'Step 2 · The equity math', condition: 'Step 3 · Condition', timeline: 'Step 4 · Timeline', next: 'Step 5 · Next move' },
+      ownedQ: 'How long have you owned the home?',
+      ownedSub: 'Time builds equity. There are no wrong answers here.',
+      ownedA: 'Less than 2 years', ownedAH: 'Worth a look at timing and taxes before listing.',
+      ownedB: '2–5 years', ownedC: '5–15 years', ownedD: '15+ years',
+      eqQ: "Let's do the math that matters",
+      eqSub: 'Your gut number for the value is fine &mdash; the real one comes from George’s comps, and that analysis is free. Rough numbers work.',
+      eqLabel1: 'What do you think it would sell for today?', eqPh1: '$400,000',
+      eqLabel2: "What's left on the mortgage? (0 if it's paid off)", eqPh2: '$220,000',
+      eqBtn: 'Do the math',
+      eqMath: function (net, worth) { return 'At your <strong>' + worth + '</strong> guess, after paying off the mortgage and typical selling costs (~8%), you’d walk away with around <strong>' + net + '</strong>.'; },
+      eqTight: 'By your guess, selling costs would eat the equity. Don’t take that as final &mdash; your guess is the weakest number in this math, and comps often beat it. George has navigated tight-equity sales before.',
+      eqMore: 'More than I thought', eqExpected: 'About what I figured',
+      eqLess: 'Less than I hoped', eqLessH: 'Your guess is the weakest number here &mdash; comps usually surprise people in a good way.',
+      condQ: "How's the house doing these days?",
+      condSub: 'Be honest &mdash; every condition has a selling strategy.',
+      condReady: 'Move-in ready', condLove: 'Needs a little love', condLoveH: 'George only recommends fixes that pay for themselves.',
+      condWork: 'Needs real work', condWorkH: 'Selling as-is is a real option.',
+      condTenant: 'It has tenants right now', condTenantH: 'Sellable &mdash; the timing just needs choreography.',
+      timeQ: 'When are you thinking?',
+      timeSub: '“Just curious” is a great answer. There’s no pressure at this end.',
+      timeNow: 'Ready now', timeSix: 'In the next 6 months',
+      timeCur: 'Just curious', timeCurH: 'Curious is the best time to plan.',
+      nextQ: 'Where would you go next?',
+      nextSub: 'The answer changes the plan more than people think.',
+      nextBigger: 'Buying our next home here', nextBiggerH: 'Selling and buying at once is George’s specialty &mdash; one conversation covers both.',
+      nextSmaller: 'Something smaller', nextLeaving: 'Leaving Arizona', nextUnsure: 'Not sure yet',
+      resultKicker: 'Your readout', resultQ: "Here's how your sale looks today",
+      resultSub: 'This is not an appraisal &mdash; it’s the starting point of your conversation with George.',
+      labels: { owned: 'Time owned', equity: 'Equity', condition: 'Condition', timeline: 'Timeline', next: 'Next move' },
+      laterV: "You'll check this later &mdash; no problem, it's not required to talk to George.",
+      ownedV: { under2: 'Under two years &mdash; look at timing and taxes before listing; George walks it with you.', '2to5': '2–5 years in &mdash; equity has had time to build.', '5to15': '5–15 years &mdash; prime equity territory.', '15plus': '15+ years &mdash; this sale is likely a big financial moment. Treat it like one.' },
+      eqV: { more: 'More equity than you thought &mdash; a good problem to have.', expected: 'About what you figured &mdash; steady hands.', less: 'Less than you hoped &mdash; remember, your guess is the weakest number; comps often beat it.' },
+      eqShort: function (net) { return ' (~' + net + ' walk-away by your guess)'; },
+      eqShortTight: ' (tight by your guess &mdash; comps decide)',
+      condV: { ready: 'Move-in ready &mdash; the photos will do the heavy lifting.', love: 'A little love needed &mdash; George only recommends fixes that pay for themselves.', work: 'Real work needed &mdash; as-is is a real option; the price accounts for it.', tenant: 'Tenant-occupied &mdash; sellable; the timing just needs choreography.' },
+      timeV: { now: 'Ready now &mdash; the comp analysis is the next 48 hours’ work.', six: 'Six months out &mdash; the perfect prep window.', curious: 'Just curious &mdash; the best kind of seller conversation. No pressure at this end.' },
+      nextV: { bigger: 'Selling and buying here &mdash; one plan covers both sides.', smaller: 'Downsizing &mdash; unlocking equity for the next chapter.', leaving: 'Leaving Arizona &mdash; George coordinates with an agent wherever you land.', unsure: 'Not sure yet &mdash; the numbers usually help decide.' },
+      promise: '“The real number doesn’t come from a website — it comes from comps. Mine is free, and it comes with no pressure to list.” — George',
+      cta: 'Take my answers to George →',
+      restart: 'Start over',
+      sumLabels: { later: 'checking later' }
+    };
+
+    var SQC_KEY = 'gp-sqc-answers';
+    var SQC_SUM_KEY = 'gp-sqc-summary';
+    var sAns = {};
+    try { sAns = JSON.parse(localStorage.getItem(SQC_KEY) || '{}') || {}; } catch (e) { sAns = {}; }
+    var S_ORDER = ['owned', 'equity', 'condition', 'timeline', 'next'];
+    var sScreen = 'owned';
+
+    function sSave() { try { localStorage.setItem(SQC_KEY, JSON.stringify(sAns)); } catch (e) {} }
+    function sMoney(n) { return '$' + Math.round(n).toLocaleString(LANG === 'es' ? 'es-US' : 'en-US'); }
+    function sNet() {
+      if (!sAns.worth_guess) return null;
+      return sAns.worth_guess - (sAns.payoff_left || 0) - sAns.worth_guess * 0.08;
+    }
+
+    function sDots() {
+      var s = sScreen === 'result' ? 5 : S_ORDER.indexOf(sScreen);
+      var h = '';
+      for (var i = 0; i < 5; i++) {
+        h += '<span class="' + (i < s ? 'done' : i === s ? 'now' : '') + '"></span>';
+      }
+      return h;
+    }
+
+    function sOpt(action, label, hint) {
+      return '<button class="qc-opt" type="button" data-act="' + action + '">' + label + (hint ? '<span class="hint">' + hint + '</span>' : '') + '</button>';
+    }
+    function sLaterBtn(step) { return '<button class="qc-later" type="button" data-act="later:' + step + '">' + ST.later + '</button>'; }
+    function sBackBtn() { return sScreen === 'owned' ? '' : '<button class="qc-back" type="button" data-act="back">' + ST.back + '</button>'; }
+
+    function sEqChips() {
+      return '<div class="qc-opts">' + sOpt('equity:more', ST.eqMore) + sOpt('equity:expected', ST.eqExpected) + sOpt('equity:less', ST.eqLess, ST.eqLessH) + '</div>';
+    }
+    function sEqMathHtml() {
+      var net = sNet();
+      if (net == null) return '';
+      var line = net > 0 ? ST.eqMath(sMoney(Math.round(net / 1000) * 1000), sMoney(sAns.worth_guess)) : ST.eqTight;
+      return '<div class="qc-math">' + line + '</div>' + sEqChips();
+    }
+
+    function sScreenHtml() {
+      var kicker = ST.kickers[sScreen] || '';
+      var body = '';
+      if (sScreen === 'owned') {
+        body = '<p class="qc-q">' + ST.ownedQ + '</p><p class="qc-sub">' + ST.ownedSub + '</p><div class="qc-opts">'
+          + sOpt('owned:under2', ST.ownedA, ST.ownedAH) + sOpt('owned:2to5', ST.ownedB)
+          + sOpt('owned:5to15', ST.ownedC) + sOpt('owned:15plus', ST.ownedD)
+          + '</div>' + sLaterBtn('owned');
+      } else if (sScreen === 'equity') {
+        body = '<p class="qc-q">' + ST.eqQ + '</p><p class="qc-sub">' + ST.eqSub + '</p>'
+          + '<p class="qc-sub" style="margin: 0 0 6px">' + ST.eqLabel1 + '</p>'
+          + '<div class="qc-input-row"><input id="sqc-worth" type="text" inputmode="numeric" placeholder="' + ST.eqPh1 + '" value="' + (sAns.worth_guess ? sMoney(sAns.worth_guess) : '') + '"></div>'
+          + '<p class="qc-sub" style="margin: 8px 0 6px">' + ST.eqLabel2 + '</p>'
+          + '<div class="qc-input-row"><input id="sqc-payoff" type="text" inputmode="numeric" placeholder="' + ST.eqPh2 + '" value="' + (sAns.payoff_left != null && sAns.worth_guess ? sMoney(sAns.payoff_left) : '') + '"><button class="btn btn-navy" type="button" data-act="eqmath">' + ST.eqBtn + '</button></div>'
+          + '<div id="sqc-eq-out">' + sEqMathHtml() + '</div>'
+          + sLaterBtn('equity');
+      } else if (sScreen === 'condition') {
+        body = '<p class="qc-q">' + ST.condQ + '</p><p class="qc-sub">' + ST.condSub + '</p><div class="qc-opts">'
+          + sOpt('condition:ready', ST.condReady) + sOpt('condition:love', ST.condLove, ST.condLoveH)
+          + sOpt('condition:work', ST.condWork, ST.condWorkH) + sOpt('condition:tenant', ST.condTenant, ST.condTenantH)
+          + '</div>' + sLaterBtn('condition');
+      } else if (sScreen === 'timeline') {
+        body = '<p class="qc-q">' + ST.timeQ + '</p><p class="qc-sub">' + ST.timeSub + '</p><div class="qc-opts">'
+          + sOpt('timeline:now', ST.timeNow) + sOpt('timeline:six', ST.timeSix)
+          + sOpt('timeline:curious', ST.timeCur, ST.timeCurH)
+          + '</div>' + sLaterBtn('timeline');
+      } else if (sScreen === 'next') {
+        body = '<p class="qc-q">' + ST.nextQ + '</p><p class="qc-sub">' + ST.nextSub + '</p><div class="qc-opts">'
+          + sOpt('next:bigger', ST.nextBigger, ST.nextBiggerH) + sOpt('next:smaller', ST.nextSmaller)
+          + sOpt('next:leaving', ST.nextLeaving) + sOpt('next:unsure', ST.nextUnsure)
+          + '</div>' + sLaterBtn('next');
+      } else if (sScreen === 'result') {
+        body = sResultHtml();
+        kicker = ST.resultKicker;
+      }
+      return '<div class="qc-head"><span class="t">' + ST.title + '</span><div class="qc-dots">' + sDots() + '</div></div>'
+        + '<div class="qc-body"><div class="qc-step">'
+        + '<p class="qc-kicker">' + kicker + '</p>'
+        + body + sBackBtn() + '</div></div>';
+    }
+
+    function sVerdict(key) {
+      var v = sAns[key];
+      if (v === 'later' || v == null) return { cls: 'later', txt: ST.laterV };
+      if (key === 'owned') return { cls: v === 'under2' ? 'work' : 'good', txt: ST.ownedV[v] };
+      if (key === 'equity') {
+        var net = sNet();
+        var extra = net == null ? '' : net > 0 ? ST.eqShort(sMoney(Math.round(net / 1000) * 1000)) : ST.eqShortTight;
+        return { cls: v === 'less' ? 'work' : 'good', txt: ST.eqV[v] + extra };
+      }
+      if (key === 'condition') return { cls: v === 'ready' ? 'good' : 'work', txt: ST.condV[v] };
+      if (key === 'timeline') return { cls: 'good', txt: ST.timeV[v] };
+      if (key === 'next') return { cls: 'good', txt: ST.nextV[v] };
+      return { cls: 'later', txt: ST.laterV };
+    }
+
+    function sBadge(cls) {
+      if (cls === 'good') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C08A3E" stroke-width="3.2"><path d="M20 6L9 17l-5-5"/></svg>';
+      if (cls === 'work') return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10203D" stroke-width="3"><path d="M5 12h14"/></svg>';
+      return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A93A1" stroke-width="2.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4.5l3 1.8"/></svg>';
+    }
+
+    function sResultHtml() {
+      var rows = '';
+      S_ORDER.forEach(function (k) {
+        var v = sVerdict(k);
+        rows += '<div class="row"><div class="badge ' + v.cls + '">' + sBadge(v.cls) + '</div><div><div class="rl">' + ST.labels[k] + '</div><div class="rv">' + v.txt + '</div></div></div>';
+      });
+      return '<p class="qc-q">' + ST.resultQ + '</p><p class="qc-sub">' + ST.resultSub + '</p>'
+        + '<div class="qc-result">' + rows + '</div>'
+        + '<p class="qc-promise">' + ST.promise + '</p>'
+        + '<div class="qc-cta-row"><button class="btn btn-gold" type="button" data-act="tostart">' + ST.cta + '</button>'
+        + '<button class="qc-restart" type="button" data-act="restart">' + ST.restart + '</button></div>';
+    }
+
+    function sSummaryText() {
+      var parts = [];
+      var plain = function (html) { var d = document.createElement('div'); d.innerHTML = html; return d.textContent; };
+      S_ORDER.forEach(function (k) {
+        var v = sAns[k];
+        if (v == null) return;
+        parts.push(plain(ST.labels[k]) + ': ' + (v === 'later' ? ST.sumLabels.later : plain(sVerdict(k).txt)));
+      });
+      return parts.join(' | ');
+    }
+
+    function sStoreSummary() {
+      var s = sSummaryText();
+      try { if (s) localStorage.setItem(SQC_SUM_KEY, s); } catch (e) {}
+    }
+
+    function sNext(after) {
+      var i = S_ORDER.indexOf(after);
+      sScreen = i >= 0 && i < S_ORDER.length - 1 ? S_ORDER[i + 1] : 'result';
+      if (sScreen === 'result') { sStoreSummary(); }
+      sRender();
+    }
+
+    function sRender() {
+      sqcHost.innerHTML = sScreenHtml();
+      ['sqc-worth', 'sqc-payoff'].forEach(function (id) {
+        var el = sqcHost.querySelector('#' + id);
+        if (el) el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); sDoEqMath(); } });
+      });
+    }
+
+    function sDoEqMath() {
+      var worthEl = sqcHost.querySelector('#sqc-worth');
+      var payoffEl = sqcHost.querySelector('#sqc-payoff');
+      var worth = parseFloat((worthEl.value || '').replace(/[^0-9.]/g, '')) || 0;
+      var payoff = parseFloat((payoffEl.value || '').replace(/[^0-9.]/g, '')) || 0;
+      if (worth <= 0) { worthEl.focus(); return; }
+      sAns.worth_guess = worth;
+      sAns.payoff_left = payoff;
+      sSave();
+      sqcHost.querySelector('#sqc-eq-out').innerHTML = sEqMathHtml();
+    }
+
+    sqcHost.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-act]');
+      if (!btn) return;
+      var act = btn.getAttribute('data-act');
+      if (act === 'eqmath') { sDoEqMath(); return; }
+      if (act === 'back') {
+        if (sScreen === 'result') { sScreen = 'next'; }
+        else { var i = S_ORDER.indexOf(sScreen); sScreen = S_ORDER[Math.max(0, i - 1)]; }
+        sRender(); return;
+      }
+      if (act === 'restart') {
+        sAns = {}; sSave();
+        try { localStorage.removeItem(SQC_SUM_KEY); } catch (err) {}
+        sScreen = 'owned'; sRender(); return;
+      }
+      if (act === 'tostart') {
+        sStoreSummary();
+        window.location.href = LANG === 'es' ? '/es/#start' : '/#start';
+        return;
+      }
+      var m = act.split(':');
+      if (m[0] === 'later') { sAns[m[1]] = 'later'; sSave(); sNext(m[1]); return; }
+      sAns[m[0]] = m[1];
+      sSave();
+      sNext(m[0]);
+    });
+
+    sqcLaunch.addEventListener('click', function () {
+      sqcHost.hidden = false;
+      sqcLaunch.style.display = 'none';
+      sScreen = 'owned';
+      sRender();
+      sqcHost.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    /* Finished on an earlier visit: quietly re-arm the summary for the form. */
+    if (Object.keys(sAns).length) sStoreSummary();
   }
 
   /* ---------- Affordability calculator (buying page) ---------- */
