@@ -889,7 +889,7 @@
     if (Object.keys(bAns).length) bStoreSummary();
   }
 
-  /* ---------- Home-Worth Checker (listing page interactive walkthrough) ----------
+  /* ---------- Ready-to-Sell Checker (listing page interactive walkthrough) ----------
      The seller sibling of the Qualify / Ready-to-Buy checkers: five questions,
      one at a time, "later" always an answer, never a verdict. The equity step
      does live walk-away math from the seller's own guess. Results ride to
@@ -898,7 +898,7 @@
   var sqcLaunch = document.getElementById('sqc-launch');
   if (sqcHost && sqcLaunch) {
     var ST = LANG === 'es' ? {
-      title: '¿Cuánto Vale Su Casa?',
+      title: 'Verificador para Vender',
       later: 'Lo reviso después',
       back: '← Atrás',
       kickers: { owned: 'Paso 1 · Tiempo con la casa', equity: 'Paso 2 · La cuenta del capital', condition: 'Paso 3 · Condición', timeline: 'Paso 4 · Calendario', next: 'Paso 5 · Siguiente paso' },
@@ -944,7 +944,7 @@
       restart: 'Empezar de nuevo',
       sumLabels: { later: 'lo revisa después' }
     } : {
-      title: 'Home-Worth Checker',
+      title: 'Ready-to-Sell Checker',
       later: "I'll check that later",
       back: '← Back',
       kickers: { owned: 'Step 1 · Time owned', equity: 'Step 2 · The equity math', condition: 'Step 3 · Condition', timeline: 'Step 4 · Timeline', next: 'Step 5 · Next move' },
