@@ -1187,6 +1187,108 @@
     if (Object.keys(sAns).length) sStoreSummary();
   }
 
+  /* ---------- Hero "I'm ready to ___" roller (homepage) ----------
+     The rolling word cycles rent/buy/sell/invest and is itself a link to the
+     current path; the chips below are the explicit chooser. Hovering pauses
+     the roll. Words and hrefs come from the chips, so EN and ES share this. */
+  var heroRoller = document.getElementById('hero-roller');
+  if (heroRoller) {
+    var rollWord = document.getElementById('roll-word');
+    var rollChips = Array.prototype.slice.call(document.querySelectorAll('#hero-choices .chip'));
+    var rollItems = rollChips.map(function (c) {
+      return { word: c.getAttribute('data-word'), href: c.getAttribute('href'), chip: c };
+    });
+    var rollI = 0, rollTimer = null;
+    var rollReduced = false;
+    try { rollReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+    function rollSet(n, animate) {
+      rollI = ((n % rollItems.length) + rollItems.length) % rollItems.length;
+      var it = rollItems[rollI];
+      if (animate) {
+        rollWord.classList.remove('rolling');
+        void rollWord.offsetWidth;
+        rollWord.classList.add('rolling');
+      }
+      rollWord.textContent = it.word;
+      rollWord.setAttribute('href', it.href);
+      rollItems.forEach(function (x, k) { x.chip.classList.toggle('on', k === rollI); });
+    }
+    function rollStart() {
+      if (rollReduced || rollTimer) return;
+      rollTimer = setInterval(function () { rollSet(rollI + 1, true); }, 2400);
+    }
+    function rollStop() { if (rollTimer) { clearInterval(rollTimer); rollTimer = null; } }
+
+    heroRoller.addEventListener('mouseenter', rollStop);
+    heroRoller.addEventListener('mouseleave', rollStart);
+    heroRoller.addEventListener('focusin', rollStop);
+    heroRoller.addEventListener('focusout', rollStart);
+    rollChips.forEach(function (c, k) {
+      c.addEventListener('mouseenter', function () { rollStop(); rollSet(k, true); });
+      c.addEventListener('mouseleave', rollStart);
+    });
+
+    rollSet(0, false);
+    rollStart();
+  }
+
+  /* ---------- Search homes by city (homepage) ----------
+     Pellands-style: the visitor picks a city and we deep-link George's
+     CENTURY 21 / Moxi search pre-centered on it. Param names verified against
+     the Moxi search bundle (location_search_field, center_lat/lon,
+     buffer_miles, geospatial, searchType). Unknown cities still pass
+     location_search_field and let Moxi geocode. */
+  var citySearch = document.getElementById('city-search');
+  if (citySearch) {
+    var GP_SEARCH_HOME = 'https://george-ponce.sites.c21.homes/search/#!/defaultsearch:true';
+    var GP_SEARCH_BASE = 'https://george-ponce.sites.c21.homes/search#status=active&searchType=criteria&geospatial=true&pgsize=20&startidx=0&sort_by=1&ptype=1%2C2%2C3%2C4%2C5%2C7%2C9%2C8&omit_hidden=true&ex_pend=true&currency=USD&buffer_miles=6';
+    var GP_CITIES = {
+      'glendale': [33.5387, -112.1860],
+      'peoria': [33.5806, -112.2374],
+      'phoenix': [33.4484, -112.0740],
+      'surprise': [33.6292, -112.3679],
+      'avondale': [33.4356, -112.3496],
+      'goodyear': [33.4353, -112.3577],
+      'buckeye': [33.3703, -112.5838],
+      'el mirage': [33.6131, -112.3246],
+      'litchfield park': [33.4934, -112.3579],
+      'sun city': [33.5975, -112.2718],
+      'sun city west': [33.6620, -112.3412],
+      'tolleson': [33.4501, -112.2596],
+      'youngtown': [33.5939, -112.3030],
+      'waddell': [33.5687, -112.4382],
+      'laveen': [33.3628, -112.1519],
+      'scottsdale': [33.4942, -111.9261],
+      'tempe': [33.4255, -111.9400],
+      'mesa': [33.4152, -111.8315],
+      'chandler': [33.3062, -111.8413],
+      'gilbert': [33.3528, -111.7890]
+    };
+    var cityTitle = function (s) {
+      return s.replace(/\b[a-z]/g, function (m) { return m.toUpperCase(); });
+    };
+    var cityList = document.getElementById('city-list');
+    if (cityList) {
+      Object.keys(GP_CITIES).forEach(function (k) {
+        var o = document.createElement('option');
+        o.value = cityTitle(k);
+        cityList.appendChild(o);
+      });
+    }
+    citySearch.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var raw = (document.getElementById('city-input').value || '').trim();
+      if (!raw) { window.open(GP_SEARCH_HOME, '_blank', 'noopener'); return; }
+      var key = raw.toLowerCase().replace(/,.*$/, '').replace(/\s+az$/, '').trim();
+      var c = GP_CITIES[key];
+      var loc = (c ? cityTitle(key) : raw) + ', AZ, USA';
+      var url = GP_SEARCH_BASE + '&location_search_field=' + encodeURIComponent(loc);
+      if (c) { url += '&center_lat=' + c[0] + '&center_lon=' + c[1]; }
+      window.open(url, '_blank', 'noopener');
+    });
+  }
+
   /* ---------- Affordability calculator (buying page) ---------- */
   var calc = document.getElementById('afford-calc');
   if (calc) {

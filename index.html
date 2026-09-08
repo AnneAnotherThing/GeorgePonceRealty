@@ -59,7 +59,7 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/css/site.css?v=20260908">
+<link rel="stylesheet" href="/css/site.css?v=20260908b">
 </head>
 <body data-autolang="1">
 
@@ -76,13 +76,12 @@
       <svg width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="#10203D" stroke-width="2"><path d="M0 1h20M0 8h20M0 15h20"/></svg>
     </button>
     <nav class="site-nav">
-      <a href="/">Home</a>
       <a href="/renting.html">Renting</a>
       <a href="/buying.html">Buying</a>
       <a href="/listing.html">Listing</a>
       <a href="/investing.html">Investing</a>
-      <a href="/#stories">Client Stories</a>
-      <a href="/network.html">Resources You Can Use</a>
+      <a href="/#stories">Stories</a>
+      <a href="/network.html">Resources</a>
       <a href="/about.html">Meet George</a>
     </nav>
     <div class="header-actions">
@@ -105,15 +104,15 @@
     <div>
       <h1 class="h1">Helping People Achieve the American&nbsp;Dream</h1>
       <p class="hero-body">Whether you're renting, buying, selling or investing, I am with you on this journey. No matter if you are ready now or in 3 years, let's schedule a free consultation.</p>
-      <div class="hero-ctas">
-        <a class="btn btn-gold" href="/renting.html">I'm ready to rent</a>
-        <a class="btn btn-ghost" href="/buying.html">I'm ready to buy</a>
-        <a class="btn btn-ghost" href="/listing.html">I'm ready to sell</a>
-        <a class="btn btn-ghost" href="/investing.html">I'm ready to invest</a>
+      <div class="hero-roller" id="hero-roller">
+        <span class="lead">I'm ready to</span>
+        <a class="word" id="roll-word" href="/renting.html">rent</a>
       </div>
-      <div class="hero-links">
-        <a class="btn btn-ghost-sm" href="https://george-ponce.sites.c21.homes/search/#!/defaultsearch:true" target="_blank" rel="noopener">Search homes &rarr;</a>
-        <a class="btn btn-ghost-sm" href="https://george-ponce.sites.c21.homes/listings/my-active-listings" target="_blank" rel="noopener">George's listings &rarr;</a>
+      <div class="hero-choices" id="hero-choices">
+        <a class="chip on" data-word="rent" href="/renting.html">rent</a>
+        <a class="chip" data-word="buy" href="/buying.html">buy</a>
+        <a class="chip" data-word="sell" href="/listing.html">sell</a>
+        <a class="chip" data-word="invest" href="/investing.html">invest</a>
       </div>
     </div>
     <div class="hero-media">
@@ -144,6 +143,21 @@
 </section>
 
 <div class="stripe-rule-red"></div>
+
+<section class="section" style="padding-top: 34px; padding-bottom: 0" id="search">
+  <div class="promise-bar" style="margin-top: 0; align-items: center">
+    <div class="gold-rule"></div>
+    <div style="flex: 1; min-width: 240px">
+      <p style="margin-bottom: 6px">Ready to look at real homes?</p>
+      <p style="font-family: 'Public Sans', sans-serif; font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.66); margin: 0">Pick a city and search every matching listing on the Arizona MLS. Opens George's CENTURY 21 search; your plan stays here with him.</p>
+    </div>
+    <form class="city-search" id="city-search">
+      <input id="city-input" type="text" list="city-list" placeholder="City &mdash; e.g. Glendale" autocomplete="off" aria-label="Search homes by city">
+      <datalist id="city-list"></datalist>
+      <button class="btn btn-gold" type="submit">Search homes &rarr;</button>
+    </form>
+  </div>
+</section>
 
 <section class="section section-tight-bottom">
   <div class="section-head-rule">
@@ -443,14 +457,14 @@
         <a href="/investing.html">Investing</a>
         <a href="https://george-ponce.sites.c21.homes/search/#!/defaultsearch:true" target="_blank" rel="noopener">Search Homes</a>
         <a href="/homeowners.html">Homeowners</a>
-        <a href="/network.html">Resources You Can Use</a>
+        <a href="/network.html">Resources</a>
         <a href="/#start">Get Started</a>
       </div>
     </div>
     <div>
       <div class="col-head">About</div>
       <div class="links">
-        <a href="/#stories">Client Stories</a>
+        <a href="/#stories">Stories</a>
         <a href="/about.html">Meet George</a>
         <a href="/contact.html">Contact</a>
         <a href="/privacy.html">Privacy &amp; Legal</a>
@@ -462,6 +476,6 @@
   </div>
 </footer>
 
-<script src="/js/site.js?v=20260908d"></script>
+<script src="/js/site.js?v=20260908e"></script>
 </body>
 </html>

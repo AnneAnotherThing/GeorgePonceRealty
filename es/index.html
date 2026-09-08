@@ -59,7 +59,7 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/css/site.css?v=20260908">
+<link rel="stylesheet" href="/css/site.css?v=20260908b">
 </head>
 <body>
 
@@ -76,13 +76,12 @@
       <svg width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="#10203D" stroke-width="2"><path d="M0 1h20M0 8h20M0 15h20"/></svg>
     </button>
     <nav class="site-nav">
-      <a href="/es/">Inicio</a>
       <a href="/es/alquiler.html">Alquiler</a>
       <a href="/es/comprar.html">Comprar</a>
       <a href="/es/vender.html">Vender</a>
       <a href="/es/invertir.html">Invertir</a>
       <a href="/es/#stories">Historias</a>
-      <a href="/es/red.html">Recursos que puede usar</a>
+      <a href="/es/red.html">Recursos</a>
       <a href="/es/sobre-george.html">Conozca a George</a>
     </nav>
     <div class="header-actions">
@@ -105,15 +104,15 @@
     <div>
       <h1 class="h1">Ayudando a alcanzar el sueño&nbsp;americano</h1>
       <p class="hero-body">Ya sea que esté alquilando, comprando, vendiendo o invirtiendo, estoy con usted en este camino. No importa si está listo ahora o dentro de 3 años, agendemos una consulta gratuita.</p>
-      <div class="hero-ctas">
-        <a class="btn btn-gold" href="/es/alquiler.html">Quiero alquilar</a>
-        <a class="btn btn-ghost" href="/es/comprar.html">Quiero comprar</a>
-        <a class="btn btn-ghost" href="/es/vender.html">Quiero vender</a>
-        <a class="btn btn-ghost" href="/es/invertir.html">Quiero invertir</a>
+      <div class="hero-roller" id="hero-roller">
+        <span class="lead">Quiero</span>
+        <a class="word" id="roll-word" href="/es/alquiler.html">alquilar</a>
       </div>
-      <div class="hero-links">
-        <a class="btn btn-ghost-sm" href="https://george-ponce.sites.c21.homes/search/#!/defaultsearch:true" target="_blank" rel="noopener">Buscar casas &rarr;</a>
-        <a class="btn btn-ghost-sm" href="https://george-ponce.sites.c21.homes/listings/my-active-listings" target="_blank" rel="noopener">Listados de George &rarr;</a>
+      <div class="hero-choices" id="hero-choices">
+        <a class="chip on" data-word="alquilar" href="/es/alquiler.html">alquilar</a>
+        <a class="chip" data-word="comprar" href="/es/comprar.html">comprar</a>
+        <a class="chip" data-word="vender" href="/es/vender.html">vender</a>
+        <a class="chip" data-word="invertir" href="/es/invertir.html">invertir</a>
       </div>
     </div>
     <div class="hero-media">
@@ -144,6 +143,21 @@
 </section>
 
 <div class="stripe-rule-red"></div>
+
+<section class="section" style="padding-top: 34px; padding-bottom: 0" id="buscar">
+  <div class="promise-bar" style="margin-top: 0; align-items: center">
+    <div class="gold-rule"></div>
+    <div style="flex: 1; min-width: 240px">
+      <p style="margin-bottom: 6px">¿Listo para ver casas de verdad?</p>
+      <p style="font-family: 'Public Sans', sans-serif; font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.66); margin: 0">Elija una ciudad y busque en todos los listados del MLS de Arizona. Abre la búsqueda CENTURY 21 de George; su plan se queda aquí con él.</p>
+    </div>
+    <form class="city-search" id="city-search">
+      <input id="city-input" type="text" list="city-list" placeholder="Ciudad &mdash; p. ej. Glendale" autocomplete="off" aria-label="Buscar casas por ciudad">
+      <datalist id="city-list"></datalist>
+      <button class="btn btn-gold" type="submit">Buscar casas &rarr;</button>
+    </form>
+  </div>
+</section>
 
 <section class="section section-tight-bottom">
   <div class="section-head-rule">
@@ -443,7 +457,7 @@
         <a href="/es/invertir.html">Invertir</a>
         <a href="https://george-ponce.sites.c21.homes/search/#!/defaultsearch:true" target="_blank" rel="noopener">Buscar casas</a>
         <a href="/es/propietarios.html">Propietarios</a>
-        <a href="/es/red.html">Recursos que puede usar</a>
+        <a href="/es/red.html">Recursos</a>
         <a href="/es/#start">Comenzar</a>
       </div>
     </div>
@@ -462,6 +476,6 @@
   </div>
 </footer>
 
-<script src="/js/site.js?v=20260908d"></script>
+<script src="/js/site.js?v=20260908e"></script>
 </body>
 </html>
