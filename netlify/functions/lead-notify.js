@@ -67,6 +67,7 @@ exports.handler = async (event) => {
       ]
     : [
         ["Name", data.name],
+        ["Buy-ready check", data.buy_summary],
         ["Looking in", data.area],
         ["Monthly income", data.income],
         ["Credit range", data.credit],
