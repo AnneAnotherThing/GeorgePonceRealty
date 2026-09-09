@@ -115,6 +115,7 @@ export async function onRequestPost(context) {
 
   const isNewsletter = data.type === "newsletter";
   const isQuestionnaire = data.type === "questionnaire";
+  const isSurvey = data.type === "survey";
   const lang = data.lang === "es" ? "Spanish" : "English";
 
   if (!isNewsletter && !data.phone && !data.email && !data.name) {
@@ -128,9 +129,11 @@ export async function onRequestPost(context) {
     ? `Newsletter signup (${lang}): ${data.email}`
     : isQuestionnaire
     ? `Renter questionnaire (${lang}): ${data.name || "no name"} - ${data.area || "no area"}`
+    : isSurvey
+    ? `Getting-to-know-you survey (${lang}): ${data.name || "no name"}`
     : `New lead (${lang}): ${data.name || "no name"} - ${data.area || "no area"}`;
 
-  const kicker = (isNewsletter ? "Newsletter signup" : isQuestionnaire ? "Renter questionnaire" : "New lead") + " · " + lang;
+  const kicker = (isNewsletter ? "Newsletter signup" : isQuestionnaire ? "Renter questionnaire" : isSurvey ? "Getting to know you" : "New lead") + " · " + lang;
   const headline = isNewsletter ? data.email : data.name || data.email || data.phone || "Someone reached out";
 
   const firstName = (data.name || "").trim().split(/\s+/)[0] || "them";
@@ -149,6 +152,19 @@ export async function onRequestPost(context) {
 
   const rows = isNewsletter
     ? [["Email", data.email], ["Language", lang]]
+    : isSurvey
+    ? [
+        ["Birthday", data.birthday],
+        ["Household", data.household],
+        ["Pets", data.pets],
+        ["Celebrates", data.celebrate],
+        ["Favorites", data.favorites],
+        ["Home needs", data.needs],
+        ["Prefers", data.contact_pref],
+        ["Phone / email given", data.phone],
+        ["Language", lang],
+        ["Linked to contact", data.contact_id ? "yes" : "no (walk-in)"],
+      ]
     : isQuestionnaire
     ? [
         ["Lease up", data.lease_end],
@@ -215,15 +231,20 @@ export async function onRequestPost(context) {
   // CRM capture: never blocks the lead. Service key bypasses RLS; the tables
   // have no anon policies at all.
   if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
+    const svc = {
+      apikey: SUPABASE_SERVICE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    };
+    const contactId =
+      typeof data.contact_id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(data.contact_id)
+        ? data.contact_id
+        : null;
     try {
       const ins = await fetch(`${SUPABASE_URL}/rest/v1/gp_lead_events`, {
         method: "POST",
-        headers: {
-          apikey: SUPABASE_SERVICE_KEY,
-          Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
-          "Content-Type": "application/json",
-          Prefer: "return=minimal",
-        },
+        headers: svc,
         body: JSON.stringify({
           type: data.type || "lead",
           lang: data.lang || "en",
@@ -231,12 +252,36 @@ export async function onRequestPost(context) {
           name: data.name || null,
           email: data.email || null,
           phone: data.phone || null,
+          contact_id: contactId,
           payload: data,
         }),
       });
       if (!ins.ok) console.error("lead: supabase insert failed", ins.status, await ins.text());
     } catch (err) {
       console.error("lead: supabase insert error", err);
+    }
+
+    // Survey answers write straight onto the linked contact card.
+    if (isSurvey && contactId) {
+      try {
+        const patch = { updated_at: new Date().toISOString() };
+        if (data.birthday) patch.birthday = data.birthday;
+        if (data.pets) patch.pets = data.pets;
+        if (data.household) patch.household = data.household;
+        if (data.contact_pref) patch.contact_pref = data.contact_pref;
+        const favBits = [];
+        if (data.celebrate) favBits.push(`Celebrates: ${data.celebrate}`);
+        if (data.favorites) favBits.push(data.favorites);
+        if (favBits.length) patch.favorites = favBits.join(" · ");
+        const upd = await fetch(`${SUPABASE_URL}/rest/v1/gp_contacts?id=eq.${contactId}`, {
+          method: "PATCH",
+          headers: svc,
+          body: JSON.stringify(patch),
+        });
+        if (!upd.ok) console.error("lead: survey contact patch failed", upd.status, await upd.text());
+      } catch (err) {
+        console.error("lead: survey contact patch error", err);
+      }
     }
   }
 

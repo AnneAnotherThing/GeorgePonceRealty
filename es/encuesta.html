@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Para Conocerle Mejor | George Ponce Realty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/site.css?v=20260908b">
+<style>
+  .sv-wrap { max-width: 640px; margin: 0 auto; padding: 36px 24px 80px; }
+  .sv-hero { text-align: center; margin-bottom: 26px; }
+  .sv-hero h1 { font-family: var(--serif); font-size: 32px; font-weight: 700; color: var(--navy); margin: 0 0 10px; }
+  .sv-hero p { font-size: 15px; color: var(--ink-muted); line-height: 1.65; margin: 0; }
+  .sv-card { background: #fff; border: 1px solid var(--hairline); border-radius: 8px; padding: 26px 28px; }
+  .fld { margin-bottom: 16px; }
+  .fld label { display: block; font-family: var(--serif); font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+  .fld .why { font-size: 12.5px; color: var(--ink-light); margin-bottom: 6px; }
+  .fld input, .fld textarea, .fld select { width: 100%; box-sizing: border-box; border: 1px solid var(--hairline-strong); border-radius: 4px; padding: 10px 12px; font-size: 14px; font-family: var(--sans); background: var(--field); color: var(--ink); }
+  .fld input:focus, .fld textarea:focus, .fld select:focus { border-color: var(--gold); outline: none; }
+  .sv-done { text-align: center; padding: 30px 10px; }
+  .sv-done .big { font-family: var(--serif); font-size: 26px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .sv-done p { font-size: 15px; color: var(--ink-muted); line-height: 1.65; }
+  .form-msg { font-size: 13.5px; margin-left: 12px; }
+  .form-msg.err { color: var(--red, #b3261e); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="/es/">
+      <img class="crest" src="/img/logo-shield.webp" alt="George Ponce Realty">
+      <span class="wm-text">
+        <span class="name">George Ponce</span>
+        <span class="tag">Agente Bilingüe</span>
+      </span>
+    </a>
+    <div class="header-actions" style="margin-left:auto">
+      <div class="lang-toggle">
+        <a class="off" id="lang-en" href="/survey.html">EN</a>
+        <a class="on" href="#" onclick="return false">ES</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="sv-wrap">
+  <div class="sv-hero">
+    <h1>Ayúdeme a conocer a su familia</h1>
+    <p>Llevo un pequeño libro de las familias con las que trabajo, para que lo importante nunca se me olvide. Dos minutos, sin respuestas incorrectas &mdash; y sí, quiero el nombre de cada mascota.<br><span style="font-size:13px">&mdash; George</span></p>
+  </div>
+
+  <div class="sv-card" id="sv-card">
+    <form id="sv-form">
+      <div class="fld">
+        <label for="s-name">Su nombre</label>
+        <input id="s-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="fld">
+        <label for="s-birthday">Su cumpleaños</label>
+        <div class="why">Para nunca dejarlo pasar. El año queda entre nosotros.</div>
+        <input id="s-birthday" name="birthday" type="date">
+      </div>
+      <div class="fld">
+        <label for="s-household">¿Quién comparte la casa con usted?</label>
+        <div class="why">Esposo, esposa, niños, la abuela &mdash; con nombres, por favor.</div>
+        <input id="s-household" name="household" type="text">
+      </div>
+      <div class="fld">
+        <label for="s-pets">Sus mascotas, por nombre</label>
+        <div class="why">Son familia. "Rocky (perro), Luna (gata)" está perfecto.</div>
+        <input id="s-pets" name="pets" type="text">
+      </div>
+      <div class="fld">
+        <label for="s-celebrate">¿Qué celebra en grande su casa?</label>
+        <div class="why">Fiestas, quinceañeras, días de partido&hellip;</div>
+        <input id="s-celebrate" name="celebrate" type="text">
+      </div>
+      <div class="fld">
+        <label for="s-favorites">Algo favorito suyo</label>
+        <div class="why">Un equipo, un lugar, un antojo &mdash; si algún día le llevo algo, quiero acertar.</div>
+        <input id="s-favorites" name="favorites" type="text">
+      </div>
+      <div class="fld">
+        <label for="s-needs">¿Algo que la casa necesite ahora?</label>
+        <input id="s-needs" name="needs" type="text">
+      </div>
+      <div class="fld">
+        <label for="s-pref">La mejor forma de contactarle</label>
+        <select id="s-pref" name="contact_pref">
+          <option value="">Elija una&hellip;</option>
+          <option value="text">Mándeme un texto</option>
+          <option value="call">Llámeme</option>
+          <option value="email">Escríbame un correo</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label for="s-phone">Teléfono o correo, para saber que es usted</label>
+        <input id="s-phone" name="phone" type="text" autocomplete="tel">
+      </div>
+      <button class="btn btn-gold" type="submit">Enviar a George</button>
+      <span class="form-msg" id="sv-msg"></span>
+    </form>
+  </div>
+
+  <div class="sv-card sv-done" id="sv-done" hidden>
+    <div class="big">¡Gracias!</div>
+    <p>Ya está en mi libro. Significa más de lo que se imagina.<br>&mdash; George</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var qs = new URLSearchParams(location.search);
+  var cid = qs.get('c') || '';
+  if (cid) {
+    var en = document.getElementById('lang-en');
+    en.href = '/survey.html?c=' + encodeURIComponent(cid);
+  }
+  var form = document.getElementById('sv-form');
+  var msg = document.getElementById('sv-msg');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.textContent = 'Enviando…'; msg.className = 'form-msg';
+    var data = { type: 'survey', lang: 'es', page: location.pathname, contact_id: cid || undefined };
+    form.querySelectorAll('input, select').forEach(function (el) { if (el.name) data[el.name] = el.value; });
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('bad status');
+      document.getElementById('sv-card').hidden = true;
+      document.getElementById('sv-done').hidden = false;
+    }).catch(function () {
+      msg.textContent = 'No se pudo enviar. Llame o mande un texto a George al (623) 853-5241.';
+      msg.className = 'form-msg err';
+    });
+  });
+})();
+</script>
+</body>
+</html>
