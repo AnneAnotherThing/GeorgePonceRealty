@@ -48,6 +48,17 @@
   .mini:hover { border-color: var(--gold); }
   .mini.danger { color: #b3261e; }
   .mini.danger:hover { border-color: #b3261e; }
+  /* compose modal */
+  .modal-back { position: fixed; inset: 0; background: rgba(16,32,61,0.45); z-index: 60; display: flex; align-items: flex-start; justify-content: center; padding: 34px 16px; overflow: auto; }
+  .modal { background: #fff; border-radius: 8px; border: 1px solid var(--hairline); max-width: 940px; width: 100%; padding: 22px 26px 20px; box-shadow: 0 24px 60px rgba(16,32,61,0.3); }
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 14px 0 16px; }
+  .tchip { background: var(--cream-warm); border: 1px solid var(--hairline-strong); border-radius: 999px; padding: 8px 16px; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; }
+  .tchip:hover { border-color: var(--gold); }
+  .tchip.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .compose-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .prev-col iframe { width: 100%; height: 380px; border: 1px solid var(--hairline-strong); border-radius: 6px; background: #f4f1eb; }
+  .prev-col .plabel { font-size: 12.5px; font-weight: 600; color: var(--ink); display: block; margin-bottom: 4px; }
+  @media (max-width: 860px) { .compose-grid { grid-template-columns: 1fr; } .prev-col iframe { height: 300px; } }
   /* login */
   .login-box { max-width: 400px; margin: 60px auto; background: #fff; border: 1px solid var(--hairline); border-radius: 8px; padding: 30px 32px; }
   .login-box h1 { font-family: var(--serif); font-size: 24px; color: var(--navy); margin: 0 0 4px; }
@@ -117,35 +128,41 @@
     </form>
   </div>
 
-  <div class="card" id="compose-card" hidden>
-    <form id="compose-form">
-      <input type="hidden" id="e-contact">
-      <div style="font-family: var(--serif); font-weight: 700; color: var(--navy); font-size: 17px; margin-bottom: 12px;">
-        Email <span id="e-name"></span> <span id="e-to" style="font-weight: 400; font-size: 13px; color: var(--ink-light);"></span>
-      </div>
-      <div class="grid2">
-        <div class="fld"><label for="e-template">Template</label>
-          <select id="e-template">
-            <option value="birthday">Birthday</option>
-            <option value="flag_day">Flag day</option>
-            <option value="check_in">Check-in</option>
-            <option value="survey">Getting-to-know-you survey</option>
-            <option value="custom">Custom</option>
-          </select></div>
-        <div class="fld"><label for="e-lang">Language</label>
-          <select id="e-lang"><option value="en">English</option><option value="es">Spanish</option></select>
-          <div class="hint">Switching template or language refills the text below.</div></div>
-        <div class="fld wide"><label for="e-subject">Subject</label><input id="e-subject" type="text" required></div>
-        <div class="fld wide"><label for="e-message">Message</label><textarea id="e-message" rows="9" required></textarea>
-          <div class="hint">Goes out on George's navy-and-gold letterhead with his signature and phone. Edit anything before sending.</div></div>
-      </div>
-      <div class="form-actions">
-        <button class="btn btn-gold" type="submit">Send email</button>
-        <button class="mini" type="button" id="compose-cancel">Cancel</button>
-        <span class="status" id="compose-status"></span>
-      </div>
-      <div style="margin-top: 10px; font-size: 12.5px; color: var(--ink-light);" id="e-history"></div>
-    </form>
+  <div class="modal-back" id="compose-back" hidden>
+    <div class="modal">
+      <form id="compose-form">
+        <input type="hidden" id="e-contact">
+        <div style="font-family: var(--serif); font-weight: 700; color: var(--navy); font-size: 19px;">Email <span id="e-name"></span></div>
+        <div id="e-to" style="font-size: 13px; color: var(--ink-light); margin-top: 2px;"></div>
+        <div class="chip-row" id="compose-chips">
+          <button type="button" class="tchip" data-tpl="birthday">&#127874; Birthday</button>
+          <button type="button" class="tchip" data-tpl="flag_day">&#9733; Flag day</button>
+          <button type="button" class="tchip" data-tpl="check_in">Check-in</button>
+          <button type="button" class="tchip" data-tpl="survey">Survey</button>
+          <button type="button" class="tchip" data-tpl="custom">Blank</button>
+          <span style="flex: 1;"></span>
+          <button type="button" class="tchip" data-lng="en">English</button>
+          <button type="button" class="tchip" data-lng="es">Espa&ntilde;ol</button>
+        </div>
+        <div class="compose-grid">
+          <div>
+            <div class="fld"><label for="e-subject">Subject</label><input id="e-subject" type="text" required></div>
+            <div class="fld"><label for="e-message">Message</label><textarea id="e-message" rows="13" required></textarea>
+              <div class="hint">Tap a template above to start over with fresh text.</div></div>
+          </div>
+          <div class="prev-col">
+            <span class="plabel">What they'll receive</span>
+            <iframe id="e-preview" sandbox="" title="Email preview"></iframe>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-gold" type="submit" id="compose-send">Send email</button>
+          <button class="mini" type="button" id="compose-cancel">Cancel</button>
+          <span class="status" id="compose-status"></span>
+        </div>
+        <div style="margin-top: 10px; font-size: 12.5px; color: var(--ink-light);" id="e-history"></div>
+      </form>
+    </div>
   </div>
 
   <div class="tabs">
@@ -195,6 +212,7 @@
         <div class="form-actions">
           <button class="btn btn-gold" type="submit">Save contact</button>
           <button class="mini" type="button" id="contact-cancel">Cancel</button>
+          <button class="mini" type="button" id="contact-email" hidden>&#9993; Send an email</button>
           <span class="status" id="contact-status"></span>
           <button class="mini danger" type="button" id="contact-delete" hidden style="margin-left:auto">Delete contact</button>
         </div>
@@ -258,48 +276,105 @@
   /* ---------- compose + send (via /api/send-client-email) ---------- */
   var TPL = {
     birthday: {
-      en: { s: 'Happy birthday, {first}!', m: 'Happy birthday, {first}!\n\nI hope today is full of the people you love. It is a joy to know you, and I am cheering for you.\n\nIf you or your home ever need anything, you know where to find me.\n\n— George' },
-      es: { s: '¡Feliz cumpleaños, {first}!', m: '¡Feliz cumpleaños, {first}!\n\nEspero que su día esté lleno de la gente que quiere. Es un gusto conocerle, y hoy celebro con usted.\n\nSi usted o su casa necesitan algo, ya sabe dónde encontrarme.\n\n— George' }
+      en: { s: 'Happy birthday, {first}!', m: 'Happy birthday, {first}!\n\nI hope today is full of the people you love. It is a joy to know you, and I am cheering for you.\n\nIf you or your home ever need anything, you know where to find me.\n\n\u2014 George' },
+      es: { s: '\u00a1Feliz cumplea\u00f1os, {first}!', m: '\u00a1Feliz cumplea\u00f1os, {first}!\n\nEspero que su d\u00eda est\u00e9 lleno de la gente que quiere. Es un gusto conocerle, y hoy celebro con usted.\n\nSi usted o su casa necesitan algo, ya sabe d\u00f3nde encontrarme.\n\n\u2014 George' }
     },
     flag_day: {
-      en: { s: 'Happy Flag Day, {first}!', m: 'Happy Flag Day, {first}!\n\nAnother year since your flag went up. I remember that day like it was yesterday, and I hope it is still flying proud.\n\nIf the house needs anything, or someone you love is starting their own road to a home, I am one call away.\n\n— George' },
-      es: { s: '¡Feliz Día de la Bandera, {first}!', m: '¡Feliz Día de la Bandera, {first}!\n\nUn año más desde que su bandera se izó. Recuerdo ese día como si fuera ayer, y espero que siga ondeando con orgullo.\n\nSi la casa necesita algo, o alguien que usted quiere empieza su propio camino hacia una casa, estoy a una llamada.\n\n— George' }
+      en: { s: 'Happy Flag Day, {first}!', m: 'Happy Flag Day, {first}!\n\nAnother year since your flag went up. I remember that day like it was yesterday, and I hope it is still flying proud.\n\nIf the house needs anything, or someone you love is starting their own road to a home, I am one call away.\n\n\u2014 George' },
+      es: { s: '\u00a1Feliz D\u00eda de la Bandera, {first}!', m: '\u00a1Feliz D\u00eda de la Bandera, {first}!\n\nUn a\u00f1o m\u00e1s desde que su bandera se iz\u00f3. Recuerdo ese d\u00eda como si fuera ayer, y espero que siga ondeando con orgullo.\n\nSi la casa necesita algo, o alguien que usted quiere empieza su propio camino hacia una casa, estoy a una llamada.\n\n\u2014 George' }
     },
     check_in: {
-      en: { s: 'Thinking of you, {first}', m: 'Hi {first},\n\nJust checking in. How is the home treating you?\n\nNo agenda here. If anything needs a repair, a referral, or just an opinion, I am happy to help.\n\n— George' },
-      es: { s: 'Pensando en usted, {first}', m: 'Hola {first}:\n\nSolo quería saludar. ¿Cómo le está tratando la casa?\n\nSin ningún compromiso. Si algo necesita una reparación, una recomendación o solo una opinión, con gusto le ayudo.\n\n— George' }
+      en: { s: 'Thinking of you, {first}', m: 'Hi {first},\n\nJust checking in. How is the home treating you?\n\nNo agenda here. If anything needs a repair, a referral, or just an opinion, I am happy to help.\n\n\u2014 George' },
+      es: { s: 'Pensando en usted, {first}', m: 'Hola {first}:\n\nSolo quer\u00eda saludar. \u00bfC\u00f3mo le est\u00e1 tratando la casa?\n\nSin ning\u00fan compromiso. Si algo necesita una reparaci\u00f3n, una recomendaci\u00f3n o solo una opini\u00f3n, con gusto le ayudo.\n\n\u2014 George' }
     },
     survey: {
-      en: { s: 'Help me get to know your family, {first}', m: 'Hi {first},\n\nI keep a little book on the families I work with so I never forget what matters: birthdays, the kids, and yes, every pet by name.\n\nWould you take two minutes and fill this out for me?\n\n{survey_link}\n\nIt means more than you know.\n\n— George' },
-      es: { s: 'Ayúdeme a conocer a su familia, {first}', m: 'Hola {first}:\n\nLlevo un pequeño libro de las familias con las que trabajo, para nunca olvidar lo que importa: cumpleaños, los niños, y sí, cada mascota por su nombre.\n\n¿Me regala dos minutos para llenar esto?\n\n{survey_link}\n\nSignifica más de lo que se imagina.\n\n— George' }
+      en: { s: 'Help me get to know your family, {first}', m: 'Hi {first},\n\nI keep a little book on the families I work with so I never forget what matters: birthdays, the kids, and yes, every pet by name.\n\nWould you take two minutes and fill this out for me?\n\n{survey_link}\n\nIt means more than you know.\n\n\u2014 George' },
+      es: { s: 'Ay\u00fademe a conocer a su familia, {first}', m: 'Hola {first}:\n\nLlevo un peque\u00f1o libro de las familias con las que trabajo, para nunca olvidar lo que importa: cumplea\u00f1os, los ni\u00f1os, y s\u00ed, cada mascota por su nombre.\n\n\u00bfMe regala dos minutos para llenar esto?\n\n{survey_link}\n\nSignifica m\u00e1s de lo que se imagina.\n\n\u2014 George' }
     },
     custom: { en: { s: '', m: '' }, es: { s: '', m: '' } }
   };
 
+  var composeTpl = 'check_in', composeLang = 'en', composeDirty = false;
+
+  /* Mirror of the server-side letterhead so the preview is honest. */
+  function previewHtml(msg, lang) {
+    var tag = lang === 'es' ? 'Agente Biling\u00fce' : 'Bilingual Realtor';
+    var paras = String(msg || '').split(/\n\s*\n/).map(function (p) {
+      var d = document.createElement('div'); d.textContent = p;
+      var escd = d.innerHTML.replace(/https?:\/\/[^\s<]+/g, function (u) { return '<a href="#" style="color:#C08A3E;">' + u + '</a>'; });
+      return '<p style="margin:0 0 14px;font-size:15px;line-height:1.7;color:#1B2432;">' + escd.replace(/\n/g, '<br>') + '</p>';
+    }).join('');
+    return '<div style="margin:0;padding:14px 6px;background:#f4f1eb;font-family:Segoe UI,Helvetica,Arial,sans-serif;">'
+      + '<div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #ece7dc;border-radius:10px;overflow:hidden;">'
+      + '<div style="background:#10203D;padding:14px 22px;display:flex;align-items:center;gap:12px;">'
+      + '<img src="' + location.origin + '/apple-touch-icon.png" width="34" height="34" style="border-radius:6px;display:block;">'
+      + '<div><div style="font-family:Georgia,serif;font-size:16px;font-weight:700;color:#fff;">George Ponce</div>'
+      + '<div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#E8C98A;">' + tag + '</div></div></div>'
+      + '<div style="height:3px;background:#C08A3E;"></div>'
+      + '<div style="padding:20px 22px 6px;">' + paras + '</div>'
+      + '<div style="padding:6px 22px 18px;"><div style="border-top:1px solid rgba(16,32,61,0.1);padding-top:12px;font-size:12px;line-height:1.7;color:#6B7480;">'
+      + '<strong style="color:#10203D;">George Ponce</strong> \u00b7 ' + tag + '<br>'
+      + '<span style="color:#C08A3E;">(623) 853-5241</span> \u00b7 <span style="color:#C08A3E;">george@georgeponcerealty.com</span><br>'
+      + '<span style="font-size:10.5px;">CENTURY 21 Northwest Realty \u00b7 Equal Housing Opportunity</span></div></div>'
+      + '</div></div>';
+  }
+  function previewRender() { $('e-preview').srcdoc = previewHtml($('e-message').value, composeLang); }
+
+  function chipSync() {
+    document.querySelectorAll('#compose-chips [data-tpl]').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-tpl') === composeTpl); });
+    document.querySelectorAll('#compose-chips [data-lng]').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-lng') === composeLang); });
+  }
+
   function composeFill() {
     var c = contacts.find(function (x) { return x.id === $('e-contact').value; });
-    var lang = $('e-lang').value;
-    var first = (c && c.first_name) || (lang === 'es' ? 'amigo' : 'friend');
-    var link = location.origin + (lang === 'es' ? '/es/encuesta.html?c=' : '/survey.html?c=') + (c ? c.id : '');
-    var t = (TPL[$('e-template').value] || TPL.custom)[lang];
+    var first = (c && c.first_name) || (composeLang === 'es' ? 'amigo' : 'friend');
+    var link = location.origin + (composeLang === 'es' ? '/es/encuesta.html?c=' : '/survey.html?c=') + (c ? c.id : '');
+    var t = (TPL[composeTpl] || TPL.custom)[composeLang];
     $('e-subject').value = t.s.replace(/{first}/g, first);
     $('e-message').value = t.m.replace(/{first}/g, first).replace(/{survey_link}/g, link);
+    composeDirty = false;
+    chipSync();
+    previewRender();
   }
+
+  function composeGuard() {
+    if (!composeDirty) return true;
+    return confirm('Start over with fresh template text? What you typed here will be replaced.');
+  }
+
+  document.querySelectorAll('#compose-chips [data-tpl]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!composeGuard()) return;
+      composeTpl = b.getAttribute('data-tpl');
+      composeFill();
+    });
+  });
+  document.querySelectorAll('#compose-chips [data-lng]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!composeGuard()) return;
+      composeLang = b.getAttribute('data-lng');
+      composeFill();
+    });
+  });
+  $('e-subject').addEventListener('input', function () { composeDirty = true; });
+  $('e-message').addEventListener('input', function () { composeDirty = true; previewRender(); });
 
   function composeOpen(id, tpl) {
     var c = contacts.find(function (x) { return x.id === id; });
     if (!c) return;
     $('e-contact').value = id;
     $('e-name').textContent = contactName(c);
-    $('e-to').textContent = c.email ? '→ ' + c.email : '(no email on file — add one to the contact first)';
-    $('e-lang').value = c.language === 'es' ? 'es' : 'en';
-    $('e-template').value = tpl || 'check_in';
+    $('e-to').textContent = c.email ? '\u2192 ' + c.email : 'No email on file yet \u2014 add one to the contact first.';
+    composeLang = c.language === 'es' ? 'es' : 'en';
+    composeTpl = tpl || 'check_in';
     composeFill();
     $('compose-status').textContent = '';
-    $('compose-card').hidden = false;
-    $('compose-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $('compose-cancel').textContent = 'Cancel';
+    $('compose-send').disabled = false;
+    $('compose-back').hidden = false;
     composeHistory(id);
   }
+  function composeClose() { $('compose-back').hidden = true; }
 
   async function composeHistory(id) {
     $('e-history').textContent = '';
@@ -307,37 +382,39 @@
     if (r.data && r.data.length) {
       $('e-history').textContent = 'Already sent: ' + r.data.map(function (l) {
         return l.template.replace('_', ' ') + ' on ' + new Date(l.created_at).toLocaleDateString();
-      }).join(' · ');
+      }).join(' \u00b7 ');
     }
   }
 
-  $('e-template').addEventListener('change', composeFill);
-  $('e-lang').addEventListener('change', composeFill);
-  $('compose-cancel').addEventListener('click', function () { $('compose-card').hidden = true; });
+  $('compose-cancel').addEventListener('click', composeClose);
+  $('compose-back').addEventListener('click', function (e) { if (e.target === $('compose-back')) composeClose(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('compose-back').hidden) composeClose(); });
 
   $('compose-form').addEventListener('submit', async function (e) {
     e.preventDefault();
     var st = $('compose-status');
     var c = contacts.find(function (x) { return x.id === $('e-contact').value; });
     if (!c || !c.email) { st.textContent = 'This contact has no email address yet.'; st.className = 'status err'; return; }
-    st.textContent = 'Sending…'; st.className = 'status';
+    st.textContent = 'Sending\u2026'; st.className = 'status';
+    $('compose-send').disabled = true;
     var sess = (await sb.auth.getSession()).data.session;
     try {
       var res = await fetch('/api/send-client-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + sess.access_token },
-        body: JSON.stringify({ contact_id: c.id, template: $('e-template').value, subject: $('e-subject').value, message: $('e-message').value })
+        body: JSON.stringify({ contact_id: c.id, template: composeTpl, subject: $('e-subject').value, message: $('e-message').value })
       });
       if (!res.ok) throw new Error(await res.text());
-      st.textContent = 'Sent to ' + c.email + ' ✓'; st.className = 'status ok';
+      st.textContent = 'Sent to ' + c.email + ' \u2713'; st.className = 'status ok';
+      $('compose-cancel').textContent = 'Done';
+      composeDirty = false;
       composeHistory(c.id);
-      setTimeout(function () { $('compose-card').hidden = true; }, 2200);
     } catch (err) {
+      $('compose-send').disabled = false;
       st.textContent = 'Send failed: ' + err.message + (location.hostname === 'localhost' ? ' (sending only works on the live site, not localhost)' : '');
       st.className = 'status err';
     }
   });
-  $('noauth-signout').addEventListener('click', async function () { await sb.auth.signOut(); show('login-view'); });
 
   /* ---------- tabs ---------- */
   document.querySelectorAll('.tabs button').forEach(function (b) {
@@ -398,6 +475,7 @@
     $('contact-form-card').hidden = false;
     $('contact-status').textContent = '';
     $('contact-delete').hidden = !c.id;
+    $('contact-email').hidden = !c.id;
     $('c-first').focus();
   }
   function editContact(id) {
@@ -406,6 +484,7 @@
   }
   $('contact-new').addEventListener('click', function () { fillForm({}); });
   $('contact-cancel').addEventListener('click', function () { $('contact-form-card').hidden = true; });
+  $('contact-email').addEventListener('click', function () { if ($('c-id').value) composeOpen($('c-id').value); });
 
   $('contact-delete').addEventListener('click', async function () {
     var id = $('c-id').value;
