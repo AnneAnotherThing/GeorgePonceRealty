@@ -1,14 +1,105 @@
-// lead-notify: emails get-started form submissions and newsletter signups
-// to George via Resend. Needs env vars:
-//   RESEND_API_KEY  - Resend API key
-//   LEAD_TO         - destination inbox (e.g. george@georgeponcerealty.com)
-//   LEAD_FROM       - verified sender (e.g. leads@georgeponcerealty.com)
+// lead-notify: emails form submissions to George via Resend, styled in the
+// site's navy and gold, and (when configured) records the event in the gp_
+// CRM tables. Same contract as functions/api/lead.js (Cloudflare). Env vars:
+//   RESEND_API_KEY, LEAD_TO, LEAD_FROM            - required, email delivery
+//   SUPABASE_URL, SUPABASE_SERVICE_KEY            - optional, CRM capture
 
 const esc = (s) =>
   String(s == null ? "" : s)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+
+const NAVY = "#10203D";
+const GOLD = "#C08A3E";
+const INK = "#1B2432";
+const MUTED = "#6B7480";
+const CREAM = "#FBF6EC";
+const LOGO = "https://georgeponcerealty.pages.dev/apple-touch-icon.png";
+
+function summaryCard(title, text) {
+  if (!text) return "";
+  const lines = String(text)
+    .split(" | ")
+    .map(
+      (p) => `<tr>
+        <td width="14" valign="top" style="padding: 3px 0; color: ${GOLD}; font-size: 13px; line-height: 1.5;">&#9733;</td>
+        <td style="padding: 3px 0; color: ${INK}; font-size: 13.5px; line-height: 1.5;">${esc(p)}</td>
+      </tr>`
+    )
+    .join("");
+  return `
+    <tr><td style="padding: 14px 24px 0;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: separate; background: ${CREAM}; border-left: 3px solid ${GOLD}; border-radius: 0 6px 6px 0;">
+        <tr><td style="padding: 12px 16px 12px 14px;">
+          <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: ${GOLD}; margin-bottom: 6px;">${esc(title)}</div>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">${lines}</table>
+        </td></tr>
+      </table>
+    </td></tr>`;
+}
+
+function actionButton(href, label, bg, color) {
+  return `<td style="padding: 0 10px 0 0;">
+    <a href="${esc(href)}" style="display: inline-block; background: ${bg}; color: ${color}; font-size: 13.5px; font-weight: 700; text-decoration: none; padding: 11px 22px; border-radius: 5px;">${esc(label)}</a>
+  </td>`;
+}
+
+function buildEmail({ kicker, headline, subline, actions, summaries, rows, page }) {
+  const actionRow = actions.length
+    ? `<tr><td style="padding: 16px 24px 2px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse;"><tr>${actions.join("")}</tr></table>
+      </td></tr>`
+    : "";
+
+  const detailRows = rows
+    .filter(([, v]) => v)
+    .map(
+      ([k, v]) => `<tr>
+        <td width="150" valign="top" style="padding: 8px 14px 8px 0; color: ${MUTED}; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid rgba(16,32,61,0.08);">${esc(k)}</td>
+        <td style="padding: 8px 0; color: ${INK}; font-size: 14px; line-height: 1.5; border-bottom: 1px solid rgba(16,32,61,0.08);">${esc(v)}</td>
+      </tr>`
+    )
+    .join("");
+
+  return `
+  <div style="margin: 0; padding: 18px 8px; background: #f4f1eb;">
+    <div style="max-width: 600px; margin: 0 auto; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; background: #ffffff; border: 1px solid #ece7dc; border-radius: 10px; overflow: hidden;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+        <tr>
+          <td style="background: ${NAVY}; padding: 18px 24px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse;"><tr>
+              <td style="padding-right: 14px;"><img src="${LOGO}" alt="" width="44" height="44" style="display: block; border: 0; border-radius: 8px;"></td>
+              <td>
+                <div style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: 700; color: #ffffff;">George Ponce Realty</div>
+                <div style="font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #E8C98A; margin-top: 2px;">${esc(kicker)}</div>
+              </td>
+            </tr></table>
+          </td>
+        </tr>
+        <tr><td style="height: 3px; background: ${GOLD}; font-size: 0; line-height: 0;">&nbsp;</td></tr>
+        <tr>
+          <td style="padding: 20px 24px 0;">
+            <div style="font-family: Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: 700; color: ${NAVY};">${esc(headline)}</div>
+            ${subline ? `<div style="font-size: 13px; color: ${MUTED}; margin-top: 4px;">${esc(subline)}</div>` : ""}
+          </td>
+        </tr>
+        ${actionRow}
+        ${summaries.map(([t, v]) => summaryCard(t, v)).join("")}
+        <tr>
+          <td style="padding: 16px 24px 6px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">${detailRows}</table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 14px 24px 18px;">
+            <div style="font-size: 11.5px; color: #9aa2ad;">Sent by the georgeponcerealty.com lead pipeline${page ? ` &middot; from ${esc(page)}` : ""}</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>`;
+}
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
@@ -40,12 +131,27 @@ exports.handler = async (event) => {
     ? `Renter questionnaire (${lang}): ${data.name || "no name"} — ${data.area || "no area"}`
     : `New lead (${lang}): ${data.name || "no name"} — ${data.area || "no area"}`;
 
+  const kicker = (isNewsletter ? "Newsletter signup" : isQuestionnaire ? "Renter questionnaire" : "New lead") + " · " + lang;
+  const headline = isNewsletter ? data.email : data.name || data.email || data.phone || "Someone reached out";
+
+  const firstName = (data.name || "").trim().split(/\s+/)[0] || "them";
+  const actions = [];
+  if (!isNewsletter && data.phone) actions.push(actionButton(`tel:${data.phone}`, `Call ${firstName}`, GOLD, NAVY));
+  if (!isNewsletter && data.phone) actions.push(actionButton(`sms:${data.phone}`, "Text", NAVY, "#ffffff"));
+  if (data.email) actions.push(actionButton(`mailto:${data.email}`, "Email", NAVY, "#ffffff"));
+
+  const summaries = isNewsletter
+    ? []
+    : [
+        ["Qualify Checker readout", data.qualify_summary],
+        ["Ready-to-Buy Checker readout", data.buy_summary],
+        ["Ready-to-Sell Checker readout", data.sell_summary],
+      ];
+
   const rows = isNewsletter
-    ? [["Email", data.email], ["Language", lang], ["Page", data.page]]
+    ? [["Email", data.email], ["Language", lang]]
     : isQuestionnaire
     ? [
-        ["Name", data.name],
-        ["Qualify check", data.qualify_summary],
         ["Lease up", data.lease_end],
         ["Needs keys by", data.move_date],
         ["Paying now", data.current_rent],
@@ -63,12 +169,8 @@ exports.handler = async (event) => {
         ["Phone", data.phone],
         ["Email", data.email],
         ["Language", lang],
-        ["Page", data.page],
       ]
     : [
-        ["Name", data.name],
-        ["Buy-ready check", data.buy_summary],
-        ["Sell-ready check", data.sell_summary],
         ["Looking in", data.area],
         ["Monthly income", data.income],
         ["Credit range", data.credit],
@@ -81,25 +183,9 @@ exports.handler = async (event) => {
         ["Contact preference", data.contact_pref],
         ["Notes", data.notes],
         ["Language", lang],
-        ["Page", data.page],
       ];
 
-  const html = `
-    <div style="font-family: system-ui, sans-serif; max-width: 560px">
-      <h2 style="color: #10203D; margin: 0 0 4px">${esc(subject)}</h2>
-      <p style="color: #6B7480; margin: 0 0 18px">From georgeponcerealty.com</p>
-      <table style="border-collapse: collapse; width: 100%">
-        ${rows
-          .filter(([, v]) => v)
-          .map(
-            ([k, v]) => `<tr>
-              <td style="padding: 7px 12px 7px 0; color: #6B7480; font-size: 13px; vertical-align: top; white-space: nowrap">${esc(k)}</td>
-              <td style="padding: 7px 0; color: #1B2432; font-size: 14px">${esc(v)}</td>
-            </tr>`
-          )
-          .join("")}
-      </table>
-    </div>`;
+  const html = buildEmail({ kicker, headline, subline: subject, actions, summaries, rows, page: data.page });
 
   const key = process.env.RESEND_API_KEY;
   const to = process.env.LEAD_TO;
@@ -128,5 +214,35 @@ exports.handler = async (event) => {
     console.error("lead-notify: Resend error", res.status, await res.text());
     return { statusCode: 502, body: "Send failed" };
   }
+
+  // CRM capture: never blocks the lead.
+  const sbUrl = process.env.SUPABASE_URL;
+  const sbKey = process.env.SUPABASE_SERVICE_KEY;
+  if (sbUrl && sbKey) {
+    try {
+      const ins = await fetch(`${sbUrl}/rest/v1/gp_lead_events`, {
+        method: "POST",
+        headers: {
+          apikey: sbKey,
+          Authorization: `Bearer ${sbKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify({
+          type: data.type || "lead",
+          lang: data.lang || "en",
+          page: data.page || null,
+          name: data.name || null,
+          email: data.email || null,
+          phone: data.phone || null,
+          payload: data,
+        }),
+      });
+      if (!ins.ok) console.error("lead-notify: supabase insert failed", ins.status, await ins.text());
+    } catch (err) {
+      console.error("lead-notify: supabase insert error", err);
+    }
+  }
+
   return { statusCode: 200, body: JSON.stringify({ ok: true }) };
 };
