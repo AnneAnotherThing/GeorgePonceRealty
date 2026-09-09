@@ -609,8 +609,16 @@ p { text-wrap: pretty; }
 .footer-legal {
   max-width: 1200px; margin: 0 auto; padding: 0 32px 36px;
   font-size: 12px; line-height: 1.7; color: rgba(255,255,255,0.58);
+  position: relative;
 }
-.footer-legal p { margin: 0 0 6px; }
+.footer-legal p { margin: 0 0 6px; padding-right: 34px; }
+/* Quiet door to the Client Book for George; invisible to everyone else. */
+.admin-cog {
+  position: absolute; right: 30px; bottom: 34px;
+  color: rgba(255,255,255,0.28); display: inline-flex;
+}
+.admin-cog:hover { color: var(--gold); }
+.admin-cog svg { display: block; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 960px) {
