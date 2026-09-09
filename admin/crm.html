@@ -100,7 +100,19 @@
 <div id="app-view" class="admin-wrap" hidden>
   <div class="admin-head">
     <h1>Client Book</h1>
-    <span class="who"><span id="who-email"></span> &middot; <button id="signout" type="button">Sign out</button></span>
+    <span class="who"><span id="who-email"></span> &middot; <button id="chpass-open" type="button">Change password</button> &middot; <button id="signout" type="button">Sign out</button></span>
+  </div>
+
+  <div class="card" id="chpass-card" hidden style="max-width: 420px;">
+    <form id="chpass-form">
+      <div class="fld"><label for="chpass-new">New password</label><input id="chpass-new" type="password" autocomplete="new-password" minlength="8" required>
+        <div class="hint">At least 8 characters. You'll stay signed in.</div></div>
+      <div class="form-actions">
+        <button class="btn btn-navy" type="submit">Update password</button>
+        <button class="mini" type="button" id="chpass-cancel">Cancel</button>
+        <span class="status" id="chpass-status"></span>
+      </div>
+    </form>
   </div>
 
   <div class="tabs">
@@ -193,6 +205,17 @@
     st.textContent = ''; route();
   });
   $('signout').addEventListener('click', async function () { await sb.auth.signOut(); show('login-view'); });
+  $('chpass-open').addEventListener('click', function () { $('chpass-card').hidden = false; $('chpass-new').focus(); });
+  $('chpass-cancel').addEventListener('click', function () { $('chpass-card').hidden = true; $('chpass-status').textContent = ''; });
+  $('chpass-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var st = $('chpass-status'); st.textContent = 'Updating…'; st.className = 'status';
+    var r = await sb.auth.updateUser({ password: $('chpass-new').value });
+    if (r.error) { st.textContent = r.error.message; st.className = 'status err'; return; }
+    st.textContent = 'Password updated.'; st.className = 'status ok';
+    $('chpass-new').value = '';
+    setTimeout(function () { $('chpass-card').hidden = true; st.textContent = ''; }, 1800);
+  });
   $('noauth-signout').addEventListener('click', async function () { await sb.auth.signOut(); show('login-view'); });
 
   /* ---------- tabs ---------- */
