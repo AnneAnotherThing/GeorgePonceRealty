@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Client Book | George Ponce Realty (admin)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/site.css?v=20260908b">
+<style>
+  .admin-wrap { max-width: 1060px; margin: 0 auto; padding: 36px 32px 80px; }
+  .admin-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 6px; }
+  .admin-head h1 { font-family: var(--serif); font-size: 32px; font-weight: 700; color: var(--navy); margin: 0; }
+  .admin-head .who { margin-left: auto; font-size: 13px; color: var(--ink-light); }
+  .admin-head .who button { background: none; border: none; color: var(--gold); font-weight: 600; cursor: pointer; font-size: 13px; }
+  .tabs { display: flex; gap: 8px; margin: 18px 0 24px; border-bottom: 1px solid var(--hairline-strong); }
+  .tabs button { background: none; border: none; border-bottom: 3px solid transparent; padding: 10px 16px; font-family: var(--sans); font-size: 14.5px; font-weight: 600; color: var(--ink-muted); cursor: pointer; }
+  .tabs button.on { color: var(--navy); border-bottom-color: var(--gold); }
+  .panel { display: none; }
+  .panel.on { display: block; }
+  .toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .toolbar input[type=text] { flex: 1; min-width: 200px; border: 1px solid var(--hairline-strong); border-radius: 4px; padding: 10px 12px; font-size: 14px; font-family: var(--sans); background: var(--field); }
+  .toolbar input:focus { border-color: var(--gold); outline: none; }
+  .card { background: #fff; border: 1px solid var(--hairline); border-radius: 6px; padding: 16px 20px; margin-bottom: 12px; }
+  .card .top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .card .nm { font-family: var(--serif); font-weight: 700; color: var(--navy); font-size: 17px; cursor: pointer; }
+  .card .nm:hover { color: var(--gold); }
+  .card .meta { font-size: 13px; color: var(--ink-light); }
+  .card .stage { margin-left: auto; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); background: var(--cream-warm); border-radius: 999px; padding: 4px 12px; }
+  .up-badge { display: inline-block; font-size: 12px; font-weight: 700; color: var(--navy); background: rgba(192,138,62,0.18); border-radius: 999px; padding: 3px 10px; margin-right: 8px; }
+  .empty { color: var(--ink-light); font-size: 14px; padding: 24px 4px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  .grid2 .wide { grid-column: 1 / -1; }
+  .fld label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .fld input, .fld textarea, .fld select { width: 100%; box-sizing: border-box; border: 1px solid var(--hairline-strong); border-radius: 4px; padding: 9px 11px; font-size: 13.5px; font-family: var(--sans); background: var(--field); color: var(--ink); }
+  .fld input:focus, .fld textarea:focus, .fld select:focus { border-color: var(--gold); outline: none; }
+  .fld .hint { font-size: 11.5px; color: var(--ink-light); margin-top: 3px; }
+  .form-actions { display: flex; gap: 12px; align-items: center; margin-top: 18px; flex-wrap: wrap; }
+  .status { font-size: 13px; color: var(--ink-light); }
+  .status.ok { color: #2e7d32; } .status.err { color: var(--red, #b3261e); }
+  .lead-payload { display: none; background: var(--cream-warm); border-radius: 5px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.6; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
+  .lead-payload.on { display: block; }
+  .mini { background: #fff; border: 1px solid var(--hairline-strong); border-radius: 4px; padding: 6px 12px; cursor: pointer; font-family: var(--sans); font-size: 12.5px; color: var(--ink); }
+  .mini:hover { border-color: var(--gold); }
+  /* login */
+  .login-box { max-width: 400px; margin: 60px auto; background: #fff; border: 1px solid var(--hairline); border-radius: 8px; padding: 30px 32px; }
+  .login-box h1 { font-family: var(--serif); font-size: 24px; color: var(--navy); margin: 0 0 4px; }
+  .login-box p { font-size: 13.5px; color: var(--ink-muted); margin: 0 0 18px; }
+  .login-box .fld { margin-bottom: 14px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a class="wordmark" href="/">
+      <img class="crest" src="/img/logo-shield.webp" alt="George Ponce Realty">
+      <span class="wm-text">
+        <span class="name">George Ponce</span>
+        <span class="tag">Client Book</span>
+      </span>
+    </a>
+    <div class="header-actions" style="margin-left:auto">
+      <a class="btn btn-nav" href="/">View site</a>
+    </div>
+  </div>
+</header>
+
+<!-- LOGIN -->
+<div id="login-view" class="admin-wrap" hidden>
+  <div class="login-box">
+    <h1>Client Book</h1>
+    <p>Sign in with the email and password Anne set up for you.</p>
+    <form id="login-form">
+      <div class="fld"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="username" required></div>
+      <div class="fld"><label for="li-pass">Password</label><input id="li-pass" type="password" autocomplete="current-password" required></div>
+      <div class="form-actions">
+        <button class="btn btn-navy" type="submit">Sign in</button>
+        <span class="status" id="login-status"></span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- NOT AUTHORIZED -->
+<div id="noauth-view" class="admin-wrap" hidden>
+  <div class="login-box">
+    <h1>Not authorized</h1>
+    <p>This account is signed in but isn't on the Client Book admin list. Ask Anne to add you.</p>
+    <button class="btn btn-navy" id="noauth-signout" type="button">Sign out</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-view" class="admin-wrap" hidden>
+  <div class="admin-head">
+    <h1>Client Book</h1>
+    <span class="who"><span id="who-email"></span> &middot; <button id="signout" type="button">Sign out</button></span>
+  </div>
+
+  <div class="tabs">
+    <button data-tab="up" class="on" type="button">Coming up</button>
+    <button data-tab="contacts" type="button">Contacts</button>
+    <button data-tab="leads" type="button">Website leads</button>
+  </div>
+
+  <!-- COMING UP -->
+  <div class="panel on" id="panel-up">
+    <div id="up-list"><div class="empty">Loading&hellip;</div></div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="panel" id="panel-contacts">
+    <div class="toolbar">
+      <input type="text" id="contact-search" placeholder="Search by name, phone, email, city&hellip;">
+      <button class="btn btn-gold" id="contact-new" type="button">+ New contact</button>
+    </div>
+    <div class="card" id="contact-form-card" hidden>
+      <form id="contact-form">
+        <input type="hidden" id="c-id">
+        <div class="grid2">
+          <div class="fld"><label for="c-first">First name</label><input id="c-first" type="text"></div>
+          <div class="fld"><label for="c-last">Last name</label><input id="c-last" type="text"></div>
+          <div class="fld"><label for="c-phone">Phone</label><input id="c-phone" type="text"></div>
+          <div class="fld"><label for="c-email">Email</label><input id="c-email" type="email"></div>
+          <div class="fld"><label for="c-language">Language</label>
+            <select id="c-language"><option value="en">English</option><option value="es">Spanish</option></select></div>
+          <div class="fld"><label for="c-stage">Stage</label>
+            <select id="c-stage">
+              <option value="lead">Lead</option><option value="renter">Renter</option>
+              <option value="buyer">Buyer</option><option value="seller">Seller</option>
+              <option value="investor">Investor</option><option value="past_client">Past client</option>
+            </select></div>
+          <div class="fld"><label for="c-birthday">Birthday</label><input id="c-birthday" type="date"></div>
+          <div class="fld"><label for="c-flagday">Flag day</label><input id="c-flagday" type="date">
+            <div class="hint">The closing day &mdash; the day George handed them the flag.</div></div>
+          <div class="fld wide"><label for="c-address">Address</label><input id="c-address" type="text"></div>
+          <div class="fld wide"><label for="c-notes">Notes</label><textarea id="c-notes" rows="3"></textarea></div>
+          <div class="fld"><label for="c-source">Source</label><input id="c-source" type="text" placeholder="website form, referral, open house&hellip;"></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-gold" type="submit">Save contact</button>
+          <button class="mini" type="button" id="contact-cancel">Cancel</button>
+          <span class="status" id="contact-status"></span>
+        </div>
+      </form>
+    </div>
+    <div id="contact-list"><div class="empty">Loading&hellip;</div></div>
+  </div>
+
+  <!-- LEADS -->
+  <div class="panel" id="panel-leads">
+    <div id="lead-list"><div class="empty">Loading&hellip;</div></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+(function () {
+  var SB_URL = 'https://jxeynaiaibbmdkugstxc.supabase.co';
+  var SB_KEY = 'sb_publishable_4G8N8laPCubgqHVEulsgww_DRLRWWYn';
+  var sb = window.supabase.createClient(SB_URL, SB_KEY);
+
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; };
+  var contacts = [];
+
+  function show(view) {
+    ['login-view', 'noauth-view', 'app-view'].forEach(function (v) { $(v).hidden = v !== view; });
+  }
+
+  /* ---------- auth ---------- */
+  async function route() {
+    var s = (await sb.auth.getSession()).data.session;
+    if (!s) { show('login-view'); return; }
+    var admin = await sb.from('gp_admins').select('user_id').eq('user_id', s.user.id).maybeSingle();
+    if (!admin.data) { show('noauth-view'); return; }
+    $('who-email').textContent = s.user.email;
+    show('app-view');
+    loadAll();
+  }
+
+  $('login-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var st = $('login-status'); st.textContent = 'Signing in…'; st.className = 'status';
+    var r = await sb.auth.signInWithPassword({ email: $('li-email').value.trim(), password: $('li-pass').value });
+    if (r.error) { st.textContent = r.error.message; st.className = 'status err'; return; }
+    st.textContent = ''; route();
+  });
+  $('signout').addEventListener('click', async function () { await sb.auth.signOut(); show('login-view'); });
+  $('noauth-signout').addEventListener('click', async function () { await sb.auth.signOut(); show('login-view'); });
+
+  /* ---------- tabs ---------- */
+  document.querySelectorAll('.tabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      document.querySelectorAll('.panel').forEach(function (p) { p.classList.toggle('on', p.id === 'panel-' + b.getAttribute('data-tab')); });
+    });
+  });
+
+  function loadAll() { loadContacts().then(renderComingUp); loadLeads(); }
+
+  /* ---------- contacts ---------- */
+  async function loadContacts() {
+    var r = await sb.from('gp_contacts').select('*').order('last_name', { ascending: true, nullsFirst: false });
+    contacts = r.data || [];
+    renderContacts();
+  }
+
+  function contactName(c) {
+    return ((c.first_name || '') + ' ' + (c.last_name || '')).trim() || c.email || c.phone || '(no name)';
+  }
+
+  function renderContacts() {
+    var q = ($('contact-search').value || '').toLowerCase();
+    var list = contacts.filter(function (c) {
+      if (!q) return true;
+      return [c.first_name, c.last_name, c.email, c.phone, c.address, c.notes, c.source].join(' ').toLowerCase().indexOf(q) >= 0;
+    });
+    $('contact-list').innerHTML = list.length
+      ? list.map(function (c) {
+          return '<div class="card"><div class="top">'
+            + '<span class="nm" data-edit="' + c.id + '">' + esc(contactName(c)) + '</span>'
+            + '<span class="meta">' + esc([c.phone, c.email].filter(Boolean).join(' · ')) + '</span>'
+            + '<span class="stage">' + esc((c.stage || 'lead').replace('_', ' ')) + '</span>'
+            + '</div></div>';
+        }).join('')
+      : '<div class="empty">No contacts' + (q ? ' match “' + esc(q) + '”' : ' yet — they’ll appear here as website leads come in, or add one') + '.</div>';
+    $('contact-list').querySelectorAll('[data-edit]').forEach(function (el) {
+      el.addEventListener('click', function () { editContact(el.getAttribute('data-edit')); });
+    });
+  }
+  $('contact-search').addEventListener('input', renderContacts);
+
+  function fillForm(c) {
+    $('c-id').value = c.id || '';
+    $('c-first').value = c.first_name || ''; $('c-last').value = c.last_name || '';
+    $('c-phone').value = c.phone || ''; $('c-email').value = c.email || '';
+    $('c-language').value = c.language || 'en'; $('c-stage').value = c.stage || 'lead';
+    $('c-birthday').value = c.birthday || ''; $('c-flagday').value = c.flag_day || '';
+    $('c-address').value = c.address || ''; $('c-notes').value = c.notes || '';
+    $('c-source').value = c.source || '';
+    $('contact-form-card').hidden = false;
+    $('contact-status').textContent = '';
+    $('c-first').focus();
+  }
+  function editContact(id) {
+    var c = contacts.find(function (x) { return x.id === id; });
+    if (c) fillForm(c);
+  }
+  $('contact-new').addEventListener('click', function () { fillForm({}); });
+  $('contact-cancel').addEventListener('click', function () { $('contact-form-card').hidden = true; });
+
+  $('contact-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var st = $('contact-status'); st.textContent = 'Saving…'; st.className = 'status';
+    var row = {
+      first_name: $('c-first').value.trim() || null, last_name: $('c-last').value.trim() || null,
+      phone: $('c-phone').value.trim() || null, email: $('c-email').value.trim() || null,
+      language: $('c-language').value, stage: $('c-stage').value,
+      birthday: $('c-birthday').value || null, flag_day: $('c-flagday').value || null,
+      address: $('c-address').value.trim() || null, notes: $('c-notes').value.trim() || null,
+      source: $('c-source').value.trim() || null, updated_at: new Date().toISOString()
+    };
+    var id = $('c-id').value;
+    var r = id
+      ? await sb.from('gp_contacts').update(row).eq('id', id)
+      : await sb.from('gp_contacts').insert(row);
+    if (r.error) { st.textContent = r.error.message; st.className = 'status err'; return; }
+    st.textContent = 'Saved.'; st.className = 'status ok';
+    $('contact-form-card').hidden = true;
+    loadContacts().then(renderComingUp);
+  });
+
+  /* ---------- coming up (birthdays + flag days, next 30 days) ---------- */
+  function daysUntil(dateStr) {
+    if (!dateStr) return null;
+    var now = new Date(); now.setHours(0, 0, 0, 0);
+    var p = dateStr.split('-');
+    var next = new Date(now.getFullYear(), Number(p[1]) - 1, Number(p[2]));
+    if (next < now) next = new Date(now.getFullYear() + 1, Number(p[1]) - 1, Number(p[2]));
+    return Math.round((next - now) / 86400000);
+  }
+  function renderComingUp() {
+    var items = [];
+    contacts.forEach(function (c) {
+      var b = daysUntil(c.birthday);
+      if (b != null && b <= 30) items.push({ c: c, kind: 'Birthday', days: b });
+      var f = daysUntil(c.flag_day);
+      if (f != null && f <= 30) items.push({ c: c, kind: 'Flag day', days: f });
+    });
+    items.sort(function (a, b) { return a.days - b.days; });
+    $('up-list').innerHTML = items.length
+      ? items.map(function (i) {
+          var when = i.days === 0 ? 'TODAY' : i.days === 1 ? 'tomorrow' : 'in ' + i.days + ' days';
+          return '<div class="card"><div class="top">'
+            + '<span class="up-badge">' + esc(i.kind) + ' · ' + esc(when) + '</span>'
+            + '<span class="nm" data-edit="' + i.c.id + '">' + esc(contactName(i.c)) + '</span>'
+            + '<span class="meta">' + esc([i.c.phone, i.c.email].filter(Boolean).join(' · ')) + '</span>'
+            + '</div></div>';
+        }).join('')
+      : '<div class="empty">Nothing in the next 30 days. Add birthdays and flag days to contacts and this becomes George’s favorite page.</div>';
+    $('up-list').querySelectorAll('[data-edit]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        document.querySelector('[data-tab="contacts"]').click();
+        editContact(el.getAttribute('data-edit'));
+      });
+    });
+  }
+
+  /* ---------- website leads ---------- */
+  async function loadLeads() {
+    var r = await sb.from('gp_lead_events').select('*').order('created_at', { ascending: false }).limit(50);
+    var leads = r.data || [];
+    $('lead-list').innerHTML = leads.length
+      ? leads.map(function (l) {
+          var d = new Date(l.created_at);
+          var summaryBits = [];
+          if (l.payload) {
+            ['qualify_summary', 'buy_summary', 'sell_summary'].forEach(function (k) {
+              if (l.payload[k]) summaryBits.push(k.replace('_summary', ' checker') + ':\n  ' + String(l.payload[k]).split(' | ').join('\n  '));
+            });
+            Object.keys(l.payload).forEach(function (k) {
+              if (['qualify_summary', 'buy_summary', 'sell_summary', 'lang', 'page', 'type'].indexOf(k) >= 0) return;
+              if (l.payload[k]) summaryBits.push(k + ': ' + l.payload[k]);
+            });
+          }
+          return '<div class="card"><div class="top">'
+            + '<span class="nm" data-toggle="' + l.id + '">' + esc(l.name || l.email || l.phone || '(no name)') + '</span>'
+            + '<span class="meta">' + esc((l.type || 'lead') + ' · ' + d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + (l.page ? ' · ' + l.page : '')) + '</span>'
+            + (l.contact_id ? '<span class="stage">in contacts</span>' : '<button class="mini" data-adopt="' + l.id + '" style="margin-left:auto">Add as contact</button>')
+            + '</div><div class="lead-payload" id="pl-' + l.id + '">' + esc(summaryBits.join('\n')) + '</div></div>';
+        }).join('')
+      : '<div class="empty">No website leads yet.</div>';
+
+    $('lead-list').querySelectorAll('[data-toggle]').forEach(function (el) {
+      el.addEventListener('click', function () { $('pl-' + el.getAttribute('data-toggle')).classList.toggle('on'); });
+    });
+    $('lead-list').querySelectorAll('[data-adopt]').forEach(function (el) {
+      el.addEventListener('click', async function () {
+        var l = leads.find(function (x) { return x.id === el.getAttribute('data-adopt'); });
+        if (!l) return;
+        el.textContent = 'Adding…';
+        var parts = (l.name || '').trim().split(/\s+/);
+        var ins = await sb.from('gp_contacts').insert({
+          first_name: parts[0] || null, last_name: parts.slice(1).join(' ') || null,
+          email: l.email || null, phone: l.phone || null,
+          language: l.lang === 'es' ? 'es' : 'en',
+          source: 'website ' + (l.type || 'lead')
+        }).select().single();
+        if (ins.error) { el.textContent = 'Failed: ' + ins.error.message; return; }
+        await sb.from('gp_lead_events').update({ contact_id: ins.data.id }).eq('id', l.id);
+        await loadContacts(); renderComingUp(); loadLeads();
+        document.querySelector('[data-tab="contacts"]').click();
+        editContact(ins.data.id);
+      });
+    });
+  }
+
+  route();
+})();
+</script>
+</body>
+</html>
