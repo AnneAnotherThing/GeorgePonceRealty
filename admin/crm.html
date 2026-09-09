@@ -46,6 +46,8 @@
   .lead-payload.on { display: block; }
   .mini { background: #fff; border: 1px solid var(--hairline-strong); border-radius: 4px; padding: 6px 12px; cursor: pointer; font-family: var(--sans); font-size: 12.5px; color: var(--ink); }
   .mini:hover { border-color: var(--gold); }
+  .mini.danger { color: #b3261e; }
+  .mini.danger:hover { border-color: #b3261e; }
   /* login */
   .login-box { max-width: 400px; margin: 60px auto; background: #fff; border: 1px solid var(--hairline); border-radius: 8px; padding: 30px 32px; }
   .login-box h1 { font-family: var(--serif); font-size: 24px; color: var(--navy); margin: 0 0 4px; }
@@ -194,6 +196,7 @@
           <button class="btn btn-gold" type="submit">Save contact</button>
           <button class="mini" type="button" id="contact-cancel">Cancel</button>
           <span class="status" id="contact-status"></span>
+          <button class="mini danger" type="button" id="contact-delete" hidden style="margin-left:auto">Delete contact</button>
         </div>
       </form>
     </div>
@@ -394,6 +397,7 @@
     $('c-favorites').value = c.favorites || ''; $('c-contactpref').value = c.contact_pref || '';
     $('contact-form-card').hidden = false;
     $('contact-status').textContent = '';
+    $('contact-delete').hidden = !c.id;
     $('c-first').focus();
   }
   function editContact(id) {
@@ -402,6 +406,18 @@
   }
   $('contact-new').addEventListener('click', function () { fillForm({}); });
   $('contact-cancel').addEventListener('click', function () { $('contact-form-card').hidden = true; });
+
+  $('contact-delete').addEventListener('click', async function () {
+    var id = $('c-id').value;
+    var c = contacts.find(function (x) { return x.id === id; });
+    if (!id) return;
+    if (!confirm('Delete ' + contactName(c || {}) + ' from the Client Book?\n\nThis removes the contact for good. Their website leads stay in the leads tab, just unlinked.')) return;
+    var st = $('contact-status'); st.textContent = 'Deleting…'; st.className = 'status';
+    var r = await sb.from('gp_contacts').delete().eq('id', id);
+    if (r.error) { st.textContent = r.error.message; st.className = 'status err'; return; }
+    $('contact-form-card').hidden = true;
+    loadContacts().then(renderComingUp); loadLeads();
+  });
 
   $('contact-form').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -490,13 +506,25 @@
           return '<div class="card"><div class="top">'
             + '<span class="nm" data-toggle="' + l.id + '">' + esc(l.name || l.email || l.phone || '(no name)') + '</span>'
             + '<span class="meta">' + esc((l.type || 'lead') + ' · ' + d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + (l.page ? ' · ' + l.page : '')) + '</span>'
-            + (l.contact_id ? '<span class="stage">in contacts</span>' : '<button class="mini" data-adopt="' + l.id + '" style="margin-left:auto">Add as contact</button>')
+            + (l.contact_id ? '<span class="stage" style="margin-left:auto">in contacts</span>' : '<button class="mini" data-adopt="' + l.id + '" style="margin-left:auto" type="button">Add as contact</button>')
+            + '<button class="mini danger" data-del="' + l.id + '" type="button">Delete</button>'
             + '</div><div class="lead-payload" id="pl-' + l.id + '">' + esc(summaryBits.join('\n')) + '</div></div>';
         }).join('')
       : '<div class="empty">No website leads yet.</div>';
 
     $('lead-list').querySelectorAll('[data-toggle]').forEach(function (el) {
       el.addEventListener('click', function () { $('pl-' + el.getAttribute('data-toggle')).classList.toggle('on'); });
+    });
+    $('lead-list').querySelectorAll('[data-del]').forEach(function (el) {
+      el.addEventListener('click', async function () {
+        var l = leads.find(function (x) { return x.id === el.getAttribute('data-del'); });
+        if (!l) return;
+        if (!confirm('Delete this ' + (l.type || 'lead') + ' from ' + (l.name || l.email || 'unknown') + '?\n\nGone for good — the email George received is unaffected.')) return;
+        el.textContent = 'Deleting…';
+        var r = await sb.from('gp_lead_events').delete().eq('id', l.id);
+        if (r.error) { el.textContent = 'Failed'; return; }
+        loadLeads();
+      });
     });
     $('lead-list').querySelectorAll('[data-adopt]').forEach(function (el) {
       el.addEventListener('click', async function () {
