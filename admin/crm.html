@@ -48,6 +48,26 @@
   .mini:hover { border-color: var(--gold); }
   .mini.danger { color: #b3261e; }
   .mini.danger:hover { border-color: #b3261e; }
+  /* Compose button: same glint-and-glow as the site's checker buttons
+     (qcShine / qcGlow keyframes come from site.css). */
+  #compose-new {
+    position: relative; overflow: hidden; border: 0;
+    font-size: 13.5px; font-weight: 700; padding: 11px 22px; border-radius: 5px;
+    background: var(--gold); color: var(--navy);
+    animation: qcGlow 3.4s ease-in-out infinite;
+  }
+  #compose-new:hover { background: var(--gold-hover); }
+  #compose-new::after {
+    content: ''; position: absolute; top: -40%; bottom: -40%; left: -70px; width: 45px;
+    background: linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-20deg);
+    animation: qcShine 3.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #compose-new { animation: none; box-shadow: 0 3px 14px rgba(192,138,62,0.35); }
+    #compose-new::after { animation: none; display: none; }
+  }
   /* compose modal */
   .modal-back { position: fixed; inset: 0; background: rgba(16,32,61,0.45); z-index: 60; display: flex; align-items: flex-start; justify-content: center; padding: 34px 16px; overflow: auto; }
   .modal { background: #fff; border-radius: 8px; border: 1px solid var(--hairline); max-width: 940px; width: 100%; padding: 22px 26px 20px; box-shadow: 0 24px 60px rgba(16,32,61,0.3); }
@@ -172,7 +192,7 @@
     <button data-tab="up" class="on" type="button">Coming up</button>
     <button data-tab="contacts" type="button">Contacts</button>
     <button data-tab="leads" type="button">Website leads</button>
-    <button class="btn btn-nav" id="compose-new" type="button" style="margin-left:auto; align-self:center; margin-bottom:6px;">&#9993; Compose email</button>
+    <button class="btn" id="compose-new" type="button" style="margin-left:auto; align-self:center; margin-bottom:6px;">&#9993; Compose email</button>
   </div>
 
   <!-- COMING UP -->
