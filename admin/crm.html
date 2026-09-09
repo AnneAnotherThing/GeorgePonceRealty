@@ -132,8 +132,11 @@
     <div class="modal">
       <form id="compose-form">
         <input type="hidden" id="e-contact">
-        <div style="font-family: var(--serif); font-weight: 700; color: var(--navy); font-size: 19px;">Email <span id="e-name"></span></div>
-        <div id="e-to" style="font-size: 13px; color: var(--ink-light); margin-top: 2px;"></div>
+        <div style="font-family: var(--serif); font-weight: 700; color: var(--navy); font-size: 19px;">Send an email</div>
+        <div class="fld" style="margin-top: 10px; max-width: 440px;">
+          <label for="e-contact-select">To</label>
+          <select id="e-contact-select"></select>
+        </div>
         <div class="chip-row" id="compose-chips">
           <button type="button" class="tchip" data-tpl="birthday">&#127874; Birthday</button>
           <button type="button" class="tchip" data-tpl="flag_day">&#9733; Flag day</button>
@@ -169,6 +172,7 @@
     <button data-tab="up" class="on" type="button">Coming up</button>
     <button data-tab="contacts" type="button">Contacts</button>
     <button data-tab="leads" type="button">Website leads</button>
+    <button class="btn btn-nav" id="compose-new" type="button" style="margin-left:auto; align-self:center; margin-bottom:6px;">&#9993; Compose email</button>
   </div>
 
   <!-- COMING UP -->
@@ -360,20 +364,32 @@
   $('e-message').addEventListener('input', function () { composeDirty = true; previewRender(); });
 
   function composeOpen(id, tpl) {
+    var sel = $('e-contact-select');
+    var sorted = contacts.slice().sort(function (a, b) { return contactName(a).localeCompare(contactName(b)); });
+    sel.innerHTML = '<option value="">Pick a contact\u2026</option>' + sorted.map(function (c) {
+      return '<option value="' + c.id + '">' + esc(contactName(c) + (c.email ? ' \u2014 ' + c.email : ' \u2014 no email on file')) + '</option>';
+    }).join('');
+    sel.value = id || '';
+    $('e-contact').value = id || '';
     var c = contacts.find(function (x) { return x.id === id; });
-    if (!c) return;
-    $('e-contact').value = id;
-    $('e-name').textContent = contactName(c);
-    $('e-to').textContent = c.email ? '\u2192 ' + c.email : 'No email on file yet \u2014 add one to the contact first.';
-    composeLang = c.language === 'es' ? 'es' : 'en';
+    composeLang = c && c.language === 'es' ? 'es' : 'en';
     composeTpl = tpl || 'check_in';
     composeFill();
     $('compose-status').textContent = '';
     $('compose-cancel').textContent = 'Cancel';
     $('compose-send').disabled = false;
     $('compose-back').hidden = false;
-    composeHistory(id);
+    if (id) { composeHistory(id); } else { $('e-history').textContent = ''; }
   }
+
+  $('compose-new').addEventListener('click', function () { composeOpen(null); });
+  $('e-contact-select').addEventListener('change', function () {
+    $('e-contact').value = this.value;
+    var c = contacts.find(function (x) { return x.id === $('e-contact').value; });
+    if (c) composeLang = c.language === 'es' ? 'es' : 'en';
+    if (!composeDirty) { composeFill(); } else { chipSync(); previewRender(); }
+    if (this.value) { composeHistory(this.value); } else { $('e-history').textContent = ''; }
+  });
   function composeClose() { $('compose-back').hidden = true; }
 
   async function composeHistory(id) {
@@ -394,7 +410,8 @@
     e.preventDefault();
     var st = $('compose-status');
     var c = contacts.find(function (x) { return x.id === $('e-contact').value; });
-    if (!c || !c.email) { st.textContent = 'This contact has no email address yet.'; st.className = 'status err'; return; }
+    if (!c) { st.textContent = 'Pick a contact first.'; st.className = 'status err'; return; }
+    if (!c.email) { st.textContent = 'This contact has no email address yet — add one to their card first.'; st.className = 'status err'; return; }
     st.textContent = 'Sending\u2026'; st.className = 'status';
     $('compose-send').disabled = true;
     var sess = (await sb.auth.getSession()).data.session;
