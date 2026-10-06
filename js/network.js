@@ -157,6 +157,55 @@
         mkPill('all', T.all);
         groups.forEach(function (g) { mkPill(g.id, g.label); });
       }
+      /* Category chips: everything the circle covers, per George's list.
+         Clicking one runs it as a search; an empty result shows the
+         call-George line, which is the point. */
+      var CATS = [
+        ['Plumbing', 'Plomer\u00eda', 'plumb', 'plom'],
+        ['Electrical', 'Electricidad', 'electric', 'electri'],
+        ['Roofing', 'Techos', 'roof', 'techo'],
+        ['Painting', 'Pintura', 'paint', 'pintur'],
+        ['Foundation', 'Cimientos', 'foundation', 'cimient'],
+        ['Solar', 'Solar', 'solar', 'solar'],
+        ['Moving', 'Mudanzas', 'mover', 'mudanz'],
+        ['Home Inspector', 'Inspector de casas', 'inspect', 'inspec'],
+        ['Credit Repair', 'Reparaci\u00f3n de cr\u00e9dito', 'credit', 'cr\u00e9dito'],
+        ['Mortgage Lender', 'Prestamista hipotecario', 'loan', 'pr\u00e9stamo'],
+        ['Surveying', 'Topograf\u00eda', 'survey', 'topograf'],
+        ['Pest Control', 'Control de plagas', 'pest', 'plaga'],
+        ['HVAC Technician', 'Aire y calefacci\u00f3n', 'cooling', 'aire'],
+        ['Home Insurance', 'Seguro de casa', 'insurance', 'seguro'],
+        ['Landscaper', 'Jardiner\u00eda', 'landscap', 'jardin'],
+        ['Locksmith', 'Cerrajero', 'locksmith', 'cerraj'],
+        ['Home Warranty', 'Garant\u00eda de casa', 'warranty', 'garant'],
+        ['Dry Wall Repair', 'Reparaci\u00f3n de drywall', 'drywall', 'drywall'],
+        ['Home Cleaner', 'Limpieza de casa', 'clean', 'limpi'],
+        ['Handyman', 'Handyman', 'handy', 'handy'],
+        ['Window Repair', 'Reparaci\u00f3n de ventanas', 'window', 'ventana'],
+        ['Flooring', 'Pisos', 'floor', 'piso'],
+        ['Storage', 'Almacenamiento', 'storage', 'almacen'],
+        ['Appliance Repair', 'Reparaci\u00f3n de electrodom\u00e9sticos', 'appliance', 'electrodom']
+      ];
+      var catsWrap = document.getElementById('net-cats');
+      if (catsWrap && input) {
+        CATS.forEach(function (cat) {
+          var chip = el('button', 'net-cat-chip', lang === 'es' ? cat[1] : cat[0]);
+          chip.type = 'button';
+          chip.addEventListener('click', function () {
+            activeSection = 'all';
+            if (pillsWrap) {
+              pillsWrap.querySelectorAll('.tab-btn').forEach(function (p) {
+                p.classList.toggle('on', p.dataset.section === 'all');
+              });
+            }
+            input.value = lang === 'es' ? cat[3] : cat[2];
+            apply();
+            input.focus();
+          });
+          catsWrap.appendChild(chip);
+        });
+      }
+
       if (input) input.addEventListener('input', apply);
       apply();
     })

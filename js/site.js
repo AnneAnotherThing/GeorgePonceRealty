@@ -1233,59 +1233,92 @@
     rollStart();
   }
 
-  /* ---------- Search homes by city (homepage) ----------
-     Pellands-style: the visitor picks a city and we deep-link George's
-     CENTURY 21 / Moxi search pre-centered on it. Param names verified against
-     the Moxi search bundle (location_search_field, center_lat/lon,
-     buffer_miles, geospatial, searchType). Unknown cities still pass
-     location_search_field and let Moxi geocode. */
+  /* ---------- Moxi search deep links (shared) ----------
+     Pellands-style: build a link into George's CENTURY 21 / Moxi search,
+     pre-centered on a known city. Param names verified against the Moxi
+     search bundle. Used by the homepage search bar and the floating search. */
+  var GP_SEARCH_HOME = 'https://george-ponce.sites.c21.homes/search/#!/defaultsearch:true';
+  var GP_SEARCH_BASE = 'https://george-ponce.sites.c21.homes/search#status=active&searchType=criteria&geospatial=true&pgsize=20&startidx=0&sort_by=1&ptype=1%2C2%2C3%2C4%2C5%2C7%2C9%2C8&omit_hidden=true&ex_pend=true&currency=USD&buffer_miles=6';
+  var GP_CITIES = {
+    'glendale': [33.5387, -112.1860],
+    'peoria': [33.5806, -112.2374],
+    'phoenix': [33.4484, -112.0740],
+    'surprise': [33.6292, -112.3679],
+    'avondale': [33.4356, -112.3496],
+    'goodyear': [33.4353, -112.3577],
+    'buckeye': [33.3703, -112.5838],
+    'el mirage': [33.6131, -112.3246],
+    'litchfield park': [33.4934, -112.3579],
+    'sun city': [33.5975, -112.2718],
+    'sun city west': [33.6620, -112.3412],
+    'tolleson': [33.4501, -112.2596],
+    'youngtown': [33.5939, -112.3030],
+    'waddell': [33.5687, -112.4382],
+    'laveen': [33.3628, -112.1519],
+    'scottsdale': [33.4942, -111.9261],
+    'tempe': [33.4255, -111.9400],
+    'mesa': [33.4152, -111.8315],
+    'chandler': [33.3062, -111.8413],
+    'gilbert': [33.3528, -111.7890]
+  };
+  function gpCityTitle(s) {
+    return s.replace(/\b[a-z]/g, function (m) { return m.toUpperCase(); });
+  }
+  function gpSearchUrl(raw) {
+    raw = (raw || '').trim();
+    if (!raw) return GP_SEARCH_HOME;
+    var key = raw.toLowerCase().replace(/,.*$/, '').replace(/\s+az$/, '').trim();
+    var c = GP_CITIES[key];
+    var loc = (c ? gpCityTitle(key) : raw) + ', AZ, USA';
+    var url = GP_SEARCH_BASE + '&location_search_field=' + encodeURIComponent(loc);
+    if (c) { url += '&center_lat=' + c[0] + '&center_lon=' + c[1]; }
+    return url;
+  }
+  function gpFillCityList(listEl) {
+    if (!listEl) return;
+    Object.keys(GP_CITIES).forEach(function (k) {
+      var o = document.createElement('option');
+      o.value = gpCityTitle(k);
+      listEl.appendChild(o);
+    });
+  }
+
+  /* Homepage search bar */
   var citySearch = document.getElementById('city-search');
   if (citySearch) {
-    var GP_SEARCH_HOME = 'https://george-ponce.sites.c21.homes/search/#!/defaultsearch:true';
-    var GP_SEARCH_BASE = 'https://george-ponce.sites.c21.homes/search#status=active&searchType=criteria&geospatial=true&pgsize=20&startidx=0&sort_by=1&ptype=1%2C2%2C3%2C4%2C5%2C7%2C9%2C8&omit_hidden=true&ex_pend=true&currency=USD&buffer_miles=6';
-    var GP_CITIES = {
-      'glendale': [33.5387, -112.1860],
-      'peoria': [33.5806, -112.2374],
-      'phoenix': [33.4484, -112.0740],
-      'surprise': [33.6292, -112.3679],
-      'avondale': [33.4356, -112.3496],
-      'goodyear': [33.4353, -112.3577],
-      'buckeye': [33.3703, -112.5838],
-      'el mirage': [33.6131, -112.3246],
-      'litchfield park': [33.4934, -112.3579],
-      'sun city': [33.5975, -112.2718],
-      'sun city west': [33.6620, -112.3412],
-      'tolleson': [33.4501, -112.2596],
-      'youngtown': [33.5939, -112.3030],
-      'waddell': [33.5687, -112.4382],
-      'laveen': [33.3628, -112.1519],
-      'scottsdale': [33.4942, -111.9261],
-      'tempe': [33.4255, -111.9400],
-      'mesa': [33.4152, -111.8315],
-      'chandler': [33.3062, -111.8413],
-      'gilbert': [33.3528, -111.7890]
-    };
-    var cityTitle = function (s) {
-      return s.replace(/\b[a-z]/g, function (m) { return m.toUpperCase(); });
-    };
-    var cityList = document.getElementById('city-list');
-    if (cityList) {
-      Object.keys(GP_CITIES).forEach(function (k) {
-        var o = document.createElement('option');
-        o.value = cityTitle(k);
-        cityList.appendChild(o);
-      });
-    }
+    gpFillCityList(document.getElementById('city-list'));
     citySearch.addEventListener('submit', function (e) {
       e.preventDefault();
-      var raw = (document.getElementById('city-input').value || '').trim();
-      if (!raw) { window.open(GP_SEARCH_HOME, '_blank', 'noopener'); return; }
-      var key = raw.toLowerCase().replace(/,.*$/, '').replace(/\s+az$/, '').trim();
-      var c = GP_CITIES[key];
-      var loc = (c ? cityTitle(key) : raw) + ', AZ, USA';
-      var url = GP_SEARCH_BASE + '&location_search_field=' + encodeURIComponent(loc);
-      if (c) { url += '&center_lat=' + c[0] + '&center_lon=' + c[1]; }
-      window.open(url, '_blank', 'noopener');
+      window.open(gpSearchUrl(document.getElementById('city-input').value), '_blank', 'noopener');
+    });
+  }
+
+  /* Floating search, George's ask: the search stays on the page everywhere. */
+  if (!document.getElementById('float-search')) {
+    var fsEs = LANG === 'es';
+    var fs = document.createElement('div');
+    fs.className = 'float-search';
+    fs.id = 'float-search';
+    fs.innerHTML = '<form class="fs-panel" hidden>'
+      + '<input type="text" list="fs-cities" placeholder="' + (fsEs ? 'Ciudad, p. ej. Glendale' : 'City, e.g. Glendale') + '" aria-label="' + (fsEs ? 'Buscar casas por ciudad' : 'Search homes by city') + '">'
+      + '<datalist id="fs-cities"></datalist>'
+      + '<button class="btn btn-gold" type="submit">' + (fsEs ? 'Buscar' : 'Search') + '</button>'
+      + '</form>'
+      + '<button type="button" class="fs-toggle" aria-expanded="false">'
+      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>'
+      + '<span>' + (fsEs ? 'Buscar casas' : 'Search homes') + '</span></button>';
+    document.body.appendChild(fs);
+    gpFillCityList(fs.querySelector('#fs-cities'));
+    var fsToggle = fs.querySelector('.fs-toggle');
+    var fsPanel = fs.querySelector('.fs-panel');
+    fsToggle.addEventListener('click', function () {
+      fsPanel.hidden = !fsPanel.hidden;
+      fsToggle.setAttribute('aria-expanded', String(!fsPanel.hidden));
+      if (!fsPanel.hidden) { fsPanel.querySelector('input').focus(); }
+    });
+    fsPanel.addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.open(gpSearchUrl(fsPanel.querySelector('input').value), '_blank', 'noopener');
     });
   }
 

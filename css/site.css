@@ -673,6 +673,43 @@ p { text-wrap: pretty; }
   .hero-roller .word.rolling { animation: none; }
 }
 
+/* Floating search (George's ask: search always within reach) */
+.float-search {
+  position: fixed; right: 18px; bottom: 18px; z-index: 50;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+}
+.fs-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--navy); color: #fff; border: 1px solid var(--gold);
+  border-radius: 999px; padding: 11px 18px;
+  font-family: var(--sans); font-size: 13.5px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(16,32,61,0.35);
+}
+.fs-toggle:hover { background: var(--navy-hover); }
+.fs-panel {
+  display: flex; gap: 8px; background: var(--navy);
+  border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 10px;
+  box-shadow: 0 12px 32px rgba(16,32,61,0.4);
+}
+.fs-panel[hidden] { display: none; }
+.fs-panel input {
+  border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); color: #fff;
+  border-radius: 4px; padding: 10px 12px; font-size: 14px; width: 170px; font-family: var(--sans);
+}
+.fs-panel input::placeholder { color: rgba(255,255,255,0.55); }
+.fs-panel input:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
+.fs-panel .btn { padding: 10px 16px; font-size: 13.5px; }
+@media (max-width: 640px) { .float-search { right: 12px; bottom: 12px; } }
+
+/* Circle of Trust category chips */
+.net-cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.net-cat-chip {
+  background: var(--cream-warm); border: 1px solid var(--hairline-strong);
+  border-radius: 999px; padding: 6px 13px;
+  font-family: var(--sans); font-size: 12.5px; color: var(--ink); cursor: pointer;
+}
+.net-cat-chip:hover { border-color: var(--gold); color: var(--navy); }
+
 /* ---------- Qualify Checker (renting page interactive walkthrough) ---------- */
 .qc-wrap { text-align: center; margin: 0 auto 44px; }
 .qc-wrap .qc-note { font-size: 13.5px; color: var(--ink-light); margin: 12px 0 0; }
