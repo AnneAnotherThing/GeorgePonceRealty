@@ -5,3 +5,8 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# Keep the pages.dev address out of search results; only the real domain
+# (georgeponcerealty.com, after cutover) gets indexed.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
